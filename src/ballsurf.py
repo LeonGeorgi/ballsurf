@@ -3,8 +3,8 @@ import sys
 import pygame
 from pygame.locals import *
 
-from src.context import Context, Key
-from src.world import World
+from context import Context, Key
+from world import World
 
 
 def run():

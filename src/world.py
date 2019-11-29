@@ -1,12 +1,13 @@
 import pygame
 
+from sprite import Sprites
+from sprites.nicholas import Nicholas
 from src.context import Context, Key
 
 
 class World:
-
     def __init__(self):
-        self.sprites = list()
+        self.sprites = Sprites([Nicholas()])
         self.x = 0
         self.pressed = False
 
@@ -16,7 +17,7 @@ class World:
         self.pressed = Key.MAIN in context.key_strokes
 
         for sprite in self.sprites:
-            sprite.render(context)
+            sprite.update(context, self.sprites)
 
     def render(self, surface: pygame.Surface, size_factor: float):
         count = 8
