@@ -2,7 +2,7 @@ import pygame
 
 from context import Context, Key
 from gamerect import GameRect
-from sprite import Sprite, Sprites
+from sprite import Sprite, Sprites, Type
 
 
 class Nicholas(Sprite):
@@ -33,3 +33,7 @@ class Nicholas(Sprite):
     @property
     def box(self) -> GameRect:
         return GameRect(0.1, self.__vpos, 0.1, 0.1)
+
+    def type(self) -> Type:
+        return Type.PLAYER
+

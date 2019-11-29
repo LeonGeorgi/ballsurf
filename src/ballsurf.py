@@ -16,7 +16,7 @@ def run():
     delta_factor = 1 / fps
     fps_clock = pygame.time.Clock()
 
-    width, height = 640, 480
+    width, height = 1280, 720
     screen: pygame.Surface = pygame.display.set_mode((width, height))
 
     world = World()

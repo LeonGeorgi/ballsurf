@@ -3,7 +3,7 @@ import pygame.gfxdraw
 
 from context import Context
 from gamerect import GameRect
-from sprite import Sprite, Sprites
+from sprite import Sprite, Sprites, Type
 
 
 class Ball(Sprite):
@@ -21,3 +21,9 @@ class Ball(Sprite):
     @property
     def box(self) -> GameRect:
         return GameRect(self.__x, 0.9, 0.10, 0.10)
+
+    def type(self) -> Type:
+        return Type.BALL
+
+    def can_delete(self) -> bool:
+        return self.__x <= -1

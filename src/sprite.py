@@ -1,12 +1,18 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import List
+from enum import IntEnum
 
 import pygame
 
-from gamerect import GameRect
 from context import Context
+from gamerect import GameRect
+
+
+class Type(IntEnum):
+    PLAYER = 0
+    BALL = 1
+    BACKGROUND = 2
 
 
 class Sprite(ABC):
@@ -23,10 +29,17 @@ class Sprite(ABC):
     def box(self) -> GameRect:
         pass
 
+    @abstractmethod
+    def type(self) -> Type:
+        pass
 
-class Sprites:
-    def __init__(self, initial_sprites: List[Sprite]):
-        self.sprite_list: List[Sprite] = initial_sprites
 
-    def __iter__(self):
-        return iter(self.sprite_list)
+class Sprites(list):
+
+    def __init__(self, l):
+        super().__init__(l)
+
+    def get_balls(self):
+        for x in self:
+            if x.type() is Type.BALL:
+                yield x

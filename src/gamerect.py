@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pygame
 
 
@@ -19,3 +21,9 @@ class GameRect:
 
     def __str__(self):
         return f'GameRect(left={self.left}, top={self.top}, width={self.width}, height={self.height})'
+
+    def intersects_with(self, other: GameRect) -> bool:
+        return not (other.left > self.left + self.width or
+                    other.left + other.width < self.left or
+                    other.top > self.top + self.height or
+                    other.top + other.height < self.top)
