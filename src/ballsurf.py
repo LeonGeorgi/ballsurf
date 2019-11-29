@@ -3,6 +3,7 @@ import sys
 import pygame
 from pygame.locals import *
 
+
 def run():
     pygame.init()
 
@@ -29,6 +30,5 @@ def run():
         fpsClock.tick(fps)
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     run()
-
