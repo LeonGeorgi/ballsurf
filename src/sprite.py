@@ -13,7 +13,7 @@ class Sprite(ABC):
         pass
 
     @abstractmethod
-    def render(self, surface: pygame.Surface):
+    def render(self, surface: pygame.Surface, size_factor: float):
         pass
 
     @abstractmethod
