@@ -3,15 +3,19 @@ import sys
 import pygame
 from pygame.locals import *
 
+from src.world import World
+
 
 def run():
     pygame.init()
 
     fps = 60
-    fpsClock = pygame.time.Clock()
+    fps_clock = pygame.time.Clock()
 
     width, height = 640, 480
-    screen = pygame.display.set_mode((width, height))
+    screen: pygame.Surface = pygame.display.set_mode((width, height))
+
+    world = World()
 
     # Game loop.
     while True:
@@ -22,12 +26,12 @@ def run():
                 pygame.quit()
                 sys.exit()
 
-        # Update.
+        world.update()
 
-        # Draw.
+        world.render(screen)
 
         pygame.display.flip()
-        fpsClock.tick(fps)
+        fps_clock.tick(fps)
 
 
 if __name__ == '__main__':
