@@ -27,15 +27,22 @@ def run():
 
         context.key_strokes = set()
 
+        # Get system events
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == K_SPACE:
-                context.key_strokes.add(Key.MAIN)
             elif event.type == pygame.VIDEORESIZE:
                 width, height = event.dict['size']
                 pygame.display.set_mode((width, height))
+
+        # Key key strokes
+        keys = pygame.key.get_pressed()
+        if keys[K_SPACE]:
+            context.key_strokes.add(Key.MAIN)
+        if keys[K_q]:
+            pygame.quit()
+            sys.exit()
 
         context.speed += speed_factor * context.time_factor
 

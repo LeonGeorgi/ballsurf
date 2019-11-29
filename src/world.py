@@ -1,6 +1,6 @@
 import pygame
 
-from src.context import Context
+from src.context import Context, Key
 
 
 class World:
@@ -8,9 +8,12 @@ class World:
     def __init__(self):
         self.sprites = list()
         self.x = 0
+        self.pressed = False
 
     def update(self, context: Context):
         self.x = (self.x - (1 / 60) * context.speed * context.time_factor) % 2.0
+
+        self.pressed = Key.MAIN in context.key_strokes
 
         for sprite in self.sprites:
             sprite.render(context)
@@ -26,6 +29,10 @@ class World:
                              pygame.Rect(x_diff + x * size, y * size, size, size))
                 flag = not flag
             flag = not flag
+
+        if self.pressed:
+            surface.fill((255, 0, 0),
+                         pygame.Rect(0.4 * size_factor, 0.4 * size_factor, 0.2 * size_factor, 0.2 * size_factor))
 
         for sprite in self.sprites:
             sprite.render(surface, size_factor)
