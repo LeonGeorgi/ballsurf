@@ -12,3 +12,4 @@ class Context:
         self.speed = 1.0
         self.time_factor = 1.0
         self.key_strokes: Set[Key] = set()
+        self.x_delta = 0.0

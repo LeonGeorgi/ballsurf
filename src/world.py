@@ -11,7 +11,7 @@ class World:
         self.pressed = False
 
     def update(self, context: Context):
-        self.x = (self.x - (1 / 60) * context.speed * context.time_factor) % 2.0
+        self.x = (self.x + context.x_delta) % 2.0
 
         self.pressed = Key.MAIN in context.key_strokes
 

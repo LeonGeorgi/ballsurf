@@ -13,6 +13,7 @@ def run():
     fps = 60
     default_millis = 1000 / fps
     speed_factor = 1 / (fps * 60)
+    delta_factor = 1 / fps
     fps_clock = pygame.time.Clock()
 
     width, height = 640, 480
@@ -45,6 +46,7 @@ def run():
             sys.exit()
 
         context.speed += speed_factor * context.time_factor
+        context.x_delta = -delta_factor * context.speed * context.time_factor
 
         world.update(context)
 
