@@ -2,17 +2,18 @@ import pygame
 
 from sprite import Sprites
 from sprites.nicholas import Nicholas
-from src.context import Context, Key
+from sprites.ball import Ball
+from context import Context, Key
 
 
 class World:
     def __init__(self):
-        self.sprites = Sprites([Nicholas()])
+        self.sprites = Sprites([Nicholas(), Ball()])
         self.x = 0
         self.pressed = False
 
     def update(self, context: Context):
-        self.x = (self.x + context.x_delta) % 2.0
+        self.x = (self.x - context.x_delta * 8) % 2.0
 
         self.pressed = Key.MAIN in context.key_strokes
 

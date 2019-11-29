@@ -12,5 +12,10 @@ class GameRect:
         return pygame.Rect(self.left * size_factor, self.top * size_factor, self.width * size_factor,
                            self.height * size_factor)
 
+    def to_ellipse_data(self, size_factor):
+        width = self.width * size_factor / 2
+        height = self.height * size_factor / 2
+        return int(self.left * size_factor + width), int(self.top * size_factor + height), int(width), int(height)
+
     def __str__(self):
         return f'GameRect(left={self.left}, top={self.top}, width={self.width}, height={self.height})'

@@ -46,7 +46,7 @@ def run():
             sys.exit()
 
         context.speed += speed_factor * context.time_factor
-        context.x_delta = -delta_factor * context.speed * context.time_factor
+        context.x_delta = delta_factor * context.speed * context.time_factor
 
         world.update(context)
 

@@ -6,7 +6,7 @@ from typing import List
 import pygame
 
 from gamerect import GameRect
-from src.context import Context
+from context import Context
 
 
 class Sprite(ABC):
