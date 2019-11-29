@@ -35,6 +35,7 @@ def run():
                 context.key_strokes.add(Key.MAIN)
             elif event.type == pygame.VIDEORESIZE:
                 width, height = event.dict['size']
+                pygame.display.set_mode((width, height))
 
         context.speed += speed_factor * context.time_factor
 
