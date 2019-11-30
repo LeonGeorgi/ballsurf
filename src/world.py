@@ -21,12 +21,15 @@ class World:
         self.time = 0
         self.countdown = Const.countdown
 
+        self.last_background = None
+        self.last_size = None
+
         for i in range(8):
             self.sprites.append(Cloud(3 * random.random() - 0.5))
 
         for i in range(10):
             self.sprites.append(Tree(3 * random.random() - 0.5))
-    
+
         balls = []
         for i in range(5):
             new = random.choices([RegularBall, SmallBall, LargeBall, BouncyBall, DeadBall],
@@ -81,8 +84,36 @@ class World:
         for sprite in self.sprites:
             sprite.update(context, self.sprites)
 
+    @staticmethod
+    def vertical(size, startcolor, endcolor):
+        """
+        Draws a vertical linear gradient filling the entire surface. Returns a
+        surface filled with the gradient (numeric is only 2-3 times faster).
+        """
+        height = size[1]
+        bigSurf = pygame.Surface((1, height)).convert_alpha()
+        dd = 1.0 / height
+        sr, sg, sb, sa = startcolor
+        er, eg, eb, ea = endcolor
+        rm = (er - sr) * dd
+        gm = (eg - sg) * dd
+        bm = (eb - sb) * dd
+        am = (ea - sa) * dd
+        for y in range(height):
+            bigSurf.set_at((0, y),
+                           (int(sr + rm * y),
+                            int(sg + gm * y),
+                            int(sb + bm * y),
+                            int(sa + am * y))
+                           )
+        return pygame.transform.scale(bigSurf, size)
+
     def render(self, surface: pygame.Surface, size_factor: float):
-        surface.fill((94, 178, 235))
+        size = surface.get_size()
+        if size != self.last_size:
+            self.last_background = World.vertical(size, (75, 142, 188, 255), (94, 178, 235, 255))
+            self.last_size = size
+        surface.blit(self.last_background, (0, 0))
 
         self.sprites.sort(key=lambda x: (x.type().value, x.z_index()))
         for sprite in self.sprites:
