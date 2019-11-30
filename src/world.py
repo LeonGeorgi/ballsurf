@@ -7,8 +7,7 @@ from const import Const
 from context import Context
 from sprite import Sprites
 from sprites.background import Background, BackgroundType
-from sprites.balls.regular_ball import RegularBall
-from sprites.balls.small_ball import SmallBall
+from sprites.balls.balls import *
 from sprites.nicholas import Nicholas
 
 
@@ -34,10 +33,9 @@ class World:
             balls.remove(ball)
 
         if len(balls) < 10 and random.random() < 0.05:
-            if random.random() < 0.5:
-                ball = RegularBall()
-            else:
-                ball = SmallBall()
+            new = random.choices([RegularBall, SmallBall, LargeBall, BouncyBall, DeadBall],
+                                 [10, 4, 2, 3, 2])
+            ball = new[0]()
             if not any(b.box.intersects_with(ball.box) for b in balls):
                 self.sprites.append(ball)
 
