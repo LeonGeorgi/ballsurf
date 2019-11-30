@@ -6,16 +6,17 @@ import pygame
 from const import Const
 from context import Context
 from sprite import Sprites, Type
-from sprites.hills import Hills
 from sprites.backgrounds.cloud import Cloud
 from sprites.backgrounds.tree import Tree
 from sprites.balls.balls import *
+from sprites.hills import Hills
 from sprites.nicholas import Nicholas
+from sprites.tartan import Tartan
 
 
 class World:
     def __init__(self):
-        self.sprites = Sprites([Nicholas(), Hills()])
+        self.sprites = Sprites([Nicholas(), Hills(), Tartan()])
         self.x = 0
         self.time = 0
         self.countdown = Const.countdown
@@ -73,7 +74,6 @@ class World:
 
     def render(self, surface: pygame.Surface, size_factor: float):
         surface.fill((94, 178, 235))
-        surface.fill((156, 67, 47), Const.tartan_area(surface))
 
         self.sprites.sort(key=lambda x: (x.type().value, x.z_index()))
         for sprite in self.sprites:
