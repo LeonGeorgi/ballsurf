@@ -40,6 +40,9 @@ class GameMenu(GameState):
         if Key.QUIT in context.key_strokes:
             return None
 
+        if len(context.key_strokes) == 0:
+            self.last_button = 0
+
         t = time.time()
         if t - self.last_button < MIN_BUTTON_TIME_DELTA:
             return self
