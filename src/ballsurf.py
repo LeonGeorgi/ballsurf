@@ -3,6 +3,7 @@ import sys
 import pygame
 from pygame.locals import *
 
+from const import Const
 from context import Context, Key
 from game import Game
 
@@ -53,7 +54,7 @@ def run():
         game.update(context)
 
         size = min(width, height)
-        game.render(screen, size)
+        game.render(screen, size / Const.game_height)
 
         pygame.display.flip()
         context.time_factor = fps_clock.tick(fps) / default_millis

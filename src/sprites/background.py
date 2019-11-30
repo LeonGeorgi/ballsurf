@@ -3,6 +3,7 @@ from enum import IntEnum
 import pygame
 import pygame.gfxdraw
 
+from const import Const
 from context import Context
 from gamerect import GameRect
 from sprite import Sprite, Sprites, Type
@@ -31,10 +32,10 @@ class Background(Sprite):
         self.__count = 12
 
     def update(self, context: Context, sprites: Sprites):
-        self.__x = (self.__x - context.x_delta * self.speed_factor * self.__count) % 2.0
+        self.__x = (self.__x - context.x_delta * self.speed_factor * self.__count / Const.game_height) % 2.0
 
     def render(self, surface: pygame.Surface, size_factor: float):
-        size = size_factor / self.__count
+        size = size_factor * Const.game_height / self.__count
         flag = False
         x_diff = self.__x * size
         for x in range(-2, self.__count * 2):

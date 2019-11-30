@@ -1,11 +1,13 @@
+import random
+
 import pygame
 
 from context import Context, Key
 from sprite import Sprites
 from sprites.background import Background, BackgroundType
-from sprites.ball import Ball
+from sprites.balls.regular_ball import RegularBall
+from sprites.balls.small_ball import SmallBall
 from sprites.nicholas import Nicholas
-import random
 
 
 class World:
@@ -29,11 +31,15 @@ class World:
             balls.remove(ball)
 
         if len(balls) < 10 and random.random() < 0.05:
-            ball = Ball()
+            if random.random() < 0.5:
+                ball = RegularBall()
+            else:
+                ball = SmallBall()
             if not any(b.box.intersects_with(ball.box) for b in balls):
-                self.sprites.append(Ball())
+                self.sprites.append(ball)
 
     def update(self, context: Context):
+        print(str(round(context.desired_speed, 3)).ljust(5), round(context.current_speed, 3))
 
         self.pressed = Key.MAIN in context.key_strokes
 
