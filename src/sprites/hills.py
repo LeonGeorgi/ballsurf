@@ -86,8 +86,8 @@ class Hills(Sprite):
         points.insert(0, (-10, surface.get_height() + 10))
         points.append((surface.get_width() + 10, surface.get_height() + 10))
 
-        pygame.gfxdraw.filled_polygon(surface, points, (106, 154, 14))
-        pygame.draw.lines(surface, (0, 0, 0), False, points, step_size)
+        pygame.gfxdraw.filled_polygon(surface, points, (116, 156, 47))
+        pygame.draw.lines(surface, (75, 102, 30), False, points, step_size)
 
     @property
     def box(self) -> GameRect:

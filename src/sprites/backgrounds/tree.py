@@ -12,14 +12,11 @@ class Tree(Background):
 
     def __init__(self, x: Optional[float] = None):
         super().__init__(
-            f"../res/img/tree.png",
-            Const.game_height * (0.2 * random.random() + 0.62),
+            f"../res/img/tree_1.png",
+            Const.game_height * (0.2 * random.random() + 0.35),
             0.5,
             x
         )
-
-    def render(self, surface: pygame.Surface, size_factor: float):
-        return
 
     def type(self) -> Type:
         return Type.TREE
