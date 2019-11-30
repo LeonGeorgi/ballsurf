@@ -24,7 +24,7 @@ class Nicholas(Sprite):
         # gravity in m/(s**2)
         a = context.gravity
 
-        if Key.MAIN in context.key_strokes and (self.__vspeed >= 0 or self.__vpos < 0.5 * Const.game_height):
+        if Key.MAIN in context.key_strokes and (self.__vspeed >= 0 or self.__vpos < 0.6 * Const.game_height):
             context.current_speed = (context.current_speed - context.desired_speed) * math.pow(
                 context.speed_factor_dec, context.time_factor) + context.desired_speed
             a *= 4
