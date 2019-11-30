@@ -105,3 +105,4 @@ venv.bak/
 
 *.iml
 .idea/
+*.xcf
