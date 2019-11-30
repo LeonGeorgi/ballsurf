@@ -1,27 +1,23 @@
 from __future__ import annotations
 
+import random
 import sys
 import time
 from abc import ABC, abstractmethod
 from typing import List, Callable, Optional, Tuple
 
-import numpy as np
 import pygame
 import pygame.font
 
+import utils
 from const import Const
 from context import Context, Key
+from sprite import Sprites, Type
+from sprites.backgrounds.cloud import Cloud
 from world import World
 
 DELTA_FACTOR = 1 / 60
 MIN_BUTTON_TIME_DELTA = 0.2
-
-
-def grayscale(img):
-    arr = pygame.surfarray.array3d(img)
-    avgs = [[(r * 0.298 + g * 0.587 + b * 0.114) for (r, g, b) in col] for col in arr]
-    arr = np.array([[[avg, avg, avg] for avg in col] for col in avgs])
-    return pygame.surfarray.make_surface(arr)
 
 
 class GameState(ABC):
@@ -108,6 +104,66 @@ class GameStateMenu(GameMenu):
             ("Start", self.start),
             ("Quit", self.quit)
         ])
+
+        self.sprites = Sprites([])
+        self.first = True
+
+        for i in range(8):
+            self.sprites.append(Cloud(3 * random.random() - 0.5, True))
+
+        self.last_background = None
+        self.last_size = None
+
+    def __update_clouds(self):
+        del_sprites = []
+        for sprite in self.sprites:
+            if sprite.can_delete():
+                del_sprites.append(sprite)
+
+        for sprite in del_sprites:
+            self.sprites.remove(sprite)
+
+        clouds = list(self.sprites.get(Type.CLOUD))
+
+        if len(clouds) < 10 and random.random() < 0.02:
+            cloud = Cloud(None, True)
+            if not any(c.box.intersects_with(cloud.box) for c in clouds):
+                self.sprites.append(cloud)
+
+    def update(self, context: Context) -> Optional[GameState]:
+        if self.first:
+            context.reset()
+            self.first = False
+
+        context.current_speed += ((context.desired_speed * 2) - context.current_speed) * 0.003
+        context.desired_speed += context.desired_speed_increase * context.time_factor
+        context.x_delta = DELTA_FACTOR * context.current_speed * context.time_factor
+        context.running_time += context.time_factor / Const.fps
+
+        self.__update_clouds()
+
+        for sprite in self.sprites:
+            sprite.update(context, self.sprites)
+
+        return super().update(context)
+
+    def render(self, surface: pygame.Surface, size_factor: float):
+        size = surface.get_size()
+        if size != self.last_size:
+            self.last_background = utils.vertical_gradient(size, (75, 142, 188, 255), (94, 178, 235, 255))
+            self.last_size = size
+        surface.blit(self.last_background, (0, 0))
+
+        self.sprites.sort(key=lambda x: (x.type().value, x.z_index()))
+        for sprite in self.sprites:
+            sprite.render(surface, size_factor)
+
+        s = pygame.Surface((surface.get_width(), surface.get_height()))
+        s.set_alpha(150)
+        s.fill((0, 0, 0))
+        surface.blit(s, (0, 0))
+
+        super().render(surface, size_factor)
 
     @staticmethod
     def start() -> Optional[GameState]:
@@ -202,7 +258,7 @@ class GameStateRunning(GameState):
         self.world.update(context)
 
         if context.lost:
-            return GameStateLost(self)
+            return GameStateLost(self.world)
 
         return self
 

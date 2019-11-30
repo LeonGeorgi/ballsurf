@@ -14,7 +14,7 @@ class Tree(Background):
         super().__init__(
             f"../res/img/tree_1.png",
             Const.game_height * (0.2 * random.random() + 0.35),
-            0.5,
+            0.3,
             x
         )
 

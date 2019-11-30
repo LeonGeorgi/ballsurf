@@ -14,7 +14,7 @@ from sprite import Sprite, Sprites, Type
 class Hills(Sprite):
 
     def __init__(self):
-        self.speed = 0.5
+        self.speed = 0.3
 
         self.control_points = []
         self.interpolation = None
