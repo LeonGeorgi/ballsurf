@@ -8,6 +8,7 @@ from context import Context, Key
 from game import Game
 from image import CachedImage
 
+
 def run():
     pygame.init()
 

@@ -12,6 +12,9 @@ from sprite import Sprite, Sprites, Type
 
 class ImageType(IntEnum):
     LARGE = 1
+    TRANSITION = 2
+    SMALL = 3
+    DEAD = 4
 
 
 class Nicholas(Sprite):
@@ -26,6 +29,8 @@ class Nicholas(Sprite):
             t: CachedImage(f"../res/img/man_{t.value}.png") for t in ImageType
         }
 
+        self.__target_image = ImageType.LARGE
+        self.__last_image_change = 0
         self.set_image(ImageType.LARGE)
 
     # noinspection PyAttributeOutsideInit
@@ -42,10 +47,12 @@ class Nicholas(Sprite):
         # gravity in m/(s**2)
         a = context.gravity
 
+        self.__target_image = ImageType.LARGE
         if Key.MAIN in context.key_strokes and (self.__vspeed >= 0 or self.__vpos < 0.6 * Const.game_height):
             context.current_speed = (context.current_speed - context.desired_speed) * math.pow(
                 context.speed_factor_dec, context.time_factor) + context.desired_speed
             a *= 4
+            self.__target_image = ImageType.SMALL
 
         self.__vpos = 1 / 2 * a * (t ** 2) + \
                       self.__vspeed * t + \
@@ -91,6 +98,16 @@ class Nicholas(Sprite):
 
             if self.__vpos + self.__height >= Const.game_height and self.__vspeed > 0:
                 context.lost = True
+                self.__target_image = ImageType.DEAD
+                self.set_image(ImageType.DEAD)
+
+        if self.__target_image is not self.image_type and context.running_time - self.__last_image_change > 0.1:
+            self.__last_image_change = context.running_time
+
+            if self.image_type is ImageType.TRANSITION:
+                self.set_image(self.__target_image)
+            else:
+                self.set_image(ImageType.TRANSITION)
 
     def bounce(self, input_speed: float, context: Context, bounciness: float):
         minimum_velocity = -math.sqrt(2 * context.gravity * self.__vpos)
