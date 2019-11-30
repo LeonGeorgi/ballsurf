@@ -24,9 +24,9 @@ class Background(Sprite):
         if self.__bg_type == BackgroundType.FOREGROUND:
             self.speed_factor = 1.0
         elif self.__bg_type == BackgroundType.MIDDLE_GROUND:
-            self.speed_factor = 0.5
+            self.speed_factor = 0.66
         else:
-            self.speed_factor = 0.25
+            self.speed_factor = 0.33
         self.__x = 0
         self.__count = 12
 

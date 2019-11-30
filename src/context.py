@@ -9,8 +9,13 @@ class Key(IntEnum):
 class Context:
 
     def __init__(self):
-        self.speed = 0.0
-        self.gravity = 0.0001
+        self.current_speed = 1.0
+        self.desired_speed = 1.0
+        self.desired_speed_increase = 0.0001
+        self.gravity = 0.00003
+        self.speed_increase = 0.005
+        self.speed_factor_dec = 0.9
+
         self.time_factor = 1.0
         self.key_strokes: Set[Key] = set()
         self.x_delta = 0.0

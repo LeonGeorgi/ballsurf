@@ -20,7 +20,7 @@ class Ball(Sprite):
 
     @property
     def box(self) -> GameRect:
-        return GameRect(self.__x, 0.9, 0.10, 0.10)
+        return GameRect(self.__x, 0.8, 0.20, 0.20)
 
     def type(self) -> Type:
         return Type.BALL

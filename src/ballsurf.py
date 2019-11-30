@@ -1,3 +1,4 @@
+import math
 import sys
 
 import pygame
@@ -45,8 +46,9 @@ def run():
             pygame.quit()
             sys.exit()
 
-        context.speed += speed_factor * context.time_factor
-        context.x_delta = delta_factor * context.speed * context.time_factor
+        context.current_speed += ((context.desired_speed * 2) - context.current_speed) * 0.003
+        context.desired_speed += context.desired_speed_increase * context.time_factor
+        context.x_delta = delta_factor * context.current_speed * context.time_factor
 
         world.update(context)
 
