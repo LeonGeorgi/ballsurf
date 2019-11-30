@@ -10,14 +10,23 @@ class Tartan(Sprite):
 
     def __init__(self):
         self.__x = 0
+        self.image = pygame.image.load("../res/img/noice.png")
+        self.border = self.image.get_width() * Const.pixel_size
 
     def update(self, context: Context, sprites: Sprites):
         self.__x -= context.x_delta
-        while self.__x < -1:
-            self.__x += 1
+        while self.__x < -self.border:
+            self.__x += self.border
 
     def render(self, surface: pygame.Surface, size_factor: float):
-        surface.fill((156, 67, 47), Const.tartan_area(surface))
+        area = Const.tartan_area(surface)
+        surface.fill((156, 67, 47), area)
+
+        size = int(self.image.get_width() * Const.pixel_size * size_factor)
+        img = pygame.transform.scale(self.image, (size, size))
+
+        for i in range(0, surface.get_width() // size + 2):
+            surface.blit(img, (i * size + self.__x * size_factor, area.top))
 
         lines = [
             int(Const.game_height * size_factor * 0.82),
@@ -26,7 +35,7 @@ class Tartan(Sprite):
         ]
 
         for y in lines:
-            for x in range(0, 2 * Const.game_height):
+            for x in range(0, 3 * Const.game_height):
                 surface.fill((255, 200, 200),
                              pygame.Rect(
                                  int((x + self.__x) * size_factor),
