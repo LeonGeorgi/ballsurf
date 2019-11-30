@@ -22,8 +22,8 @@ class Context:
 
     # noinspection PyAttributeOutsideInit
     def reset(self):
-        self.current_speed = 4.0
-        self.desired_speed = 4.0
+        self.current_speed = 8.0
+        self.desired_speed = 8.0
         self.desired_speed_increase = 0.0001
         self.bounciness_factor = 0.6
 

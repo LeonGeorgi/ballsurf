@@ -27,7 +27,7 @@ class Nicholas(Sprite):
         if Key.MAIN in context.key_strokes and (self.__vspeed >= 0 or self.__vpos < 0.5 * Const.game_height):
             context.current_speed = (context.current_speed - context.desired_speed) * math.pow(
                 context.speed_factor_dec, context.time_factor) + context.desired_speed
-            a *= 4
+            a *= 6
 
         self.__vpos = 1 / 2 * a * (t ** 2) + \
                       self.__vspeed * t + \

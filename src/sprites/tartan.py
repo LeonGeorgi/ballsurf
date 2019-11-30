@@ -32,7 +32,7 @@ class Tartan(Sprite):
                                  int((x + self.__x) * size_factor),
                                  y,
                                  int(size_factor * 1),
-                                 int(size_factor * 0.05)
+                                 int(size_factor * Const.pixel_size)
                              ))
 
     def box(self) -> GameRect:
