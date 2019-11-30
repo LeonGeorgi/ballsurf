@@ -1,11 +1,17 @@
 import math
+from enum import IntEnum
 
 import pygame
 
 from const import Const
 from context import Context, Key
 from gamerect import GameRect
+from image import CachedImage
 from sprite import Sprite, Sprites, Type
+
+
+class ImageType(IntEnum):
+    LARGE = 1
 
 
 class Nicholas(Sprite):
@@ -13,10 +19,22 @@ class Nicholas(Sprite):
     def __init__(self):
         self.__vpos = 0.5
         self.__vspeed = -0.005
-        self.__height = 1
-        self.__vpos_max = 1 - self.__height
         self.__bounced = False
         self.__last_ball = None
+
+        self.images = {
+            t: CachedImage(f"../res/img/man_{t.value}.png") for t in ImageType
+        }
+
+        self.set_image(ImageType.LARGE)
+
+    # noinspection PyAttributeOutsideInit
+    def set_image(self, t: ImageType):
+        self.image_type = t
+        self.image = self.images[self.image_type]
+        self.__width = self.image.get_width() * Const.pixel_size
+        self.__height = self.image.get_height() * Const.pixel_size
+        self.__vpos_max = 1 - self.__height
 
     def move_by_gravity(self, context: Context):
         # time in s
@@ -87,11 +105,25 @@ class Nicholas(Sprite):
         self.bounce(self.__vspeed, context, bounciness)
 
     def render(self, surface: pygame.Surface, size_factor: float):
-        surface.fill((0, 200, 0), self.box.to_pygame(size_factor))
+        w = int(self.__width * size_factor)
+        h = int(self.__height * size_factor)
+        img = self.image.scale(w, h)
+        pos = self.box.to_pygame(size_factor)
+
+        # surface.fill((0, 200, 0), self.box.to_pygame(size_factor))
+        surface.blit(img, (pos.left, pos.top))
 
     @property
     def box(self) -> GameRect:
-        return GameRect(Const.game_height * 0.2, self.__vpos, self.__height, self.__height)
+        w = self.__width
+        h = self.__height
+
+        if self.image_type is ImageType.LARGE:
+            h -= 4 * Const.pixel_size
+
+        # TODO update bouncs from bottom to use the bounting box instead of the raw values to allow vertical centering
+        # return GameRect(Const.game_height * 0.2 - w / 2, self.__vpos - h / 2, w, h)
+        return GameRect(Const.game_height * 0.2 - w / 2, self.__vpos, w, h)
 
     def type(self) -> Type:
         return Type.PLAYER
