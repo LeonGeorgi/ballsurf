@@ -21,7 +21,7 @@ class World:
         self.time = 0
         self.countdown = Const.countdown
 
-        for i in range(20):
+        for i in range(8):
             self.sprites.append(Cloud(3 * random.random() - 0.5))
 
         for i in range(10):
@@ -39,7 +39,7 @@ class World:
     def __update_clouds(self):
         clouds = list(self.sprites.get(Type.CLOUD))
 
-        if len(clouds) < 30 and random.random() < 0.03:
+        if len(clouds) < 10 and random.random() < 0.02:
             cloud = Cloud()
             if not any(c.box.intersects_with(cloud.box) for c in clouds):
                 self.sprites.append(cloud)

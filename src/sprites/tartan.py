@@ -3,6 +3,7 @@ import pygame
 from const import Const
 from context import Context
 from gamerect import GameRect
+from image import CachedImage
 from sprite import Sprite, Sprites, Type
 
 
@@ -11,7 +12,7 @@ class Tartan(Sprite):
     def __init__(self):
         self.__x = 0
         self.meters = 0
-        self.image = pygame.image.load("../res/img/noice.png")
+        self.image = CachedImage("../res/img/noice.png")
         self.border = self.image.get_width() * Const.pixel_size
 
     def update(self, context: Context, sprites: Sprites):
@@ -25,7 +26,7 @@ class Tartan(Sprite):
         surface.fill((156, 67, 47), area)
 
         size = int(self.image.get_width() * Const.pixel_size * size_factor)
-        img = pygame.transform.scale(self.image, (size, size))
+        img = self.image.scale(size, size)
 
         for i in range(0, surface.get_width() // size + 2):
             surface.blit(img, (i * size + self.__x * size_factor, area.top))

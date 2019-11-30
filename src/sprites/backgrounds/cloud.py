@@ -10,9 +10,8 @@ class Cloud(Background):
 
     def __init__(self, x: Optional[float] = None):
         super().__init__(
-            f"../res/img/hoelli_{random.randint(1, 11)}.png",
+            f"../res/img/cloud_{random.randint(1, 5)}.png",
             Const.game_height * (0.5 * random.random() - 0.05),
-            0.5 + 0.2 * random.random(),
             0.2 + 0.06 * random.random(),
             x
         )
