@@ -29,3 +29,4 @@ class Context:
         self.speed_increase = 0.005
         self.speed_factor_dec = 0.9
         self.lost = False
+        self.running_time = 0.0

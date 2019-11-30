@@ -8,6 +8,7 @@ from typing import List, Callable, Optional, Tuple
 import pygame
 import pygame.font
 
+from const import Const
 from context import Context, Key
 from world import World
 
@@ -162,6 +163,7 @@ class GameStateRunning(GameState):
         context.current_speed += ((context.desired_speed * 2) - context.current_speed) * 0.003
         context.desired_speed += context.desired_speed_increase * context.time_factor
         context.x_delta = DELTA_FACTOR * context.current_speed * context.time_factor
+        context.running_time += context.time_factor / Const.fps
 
         self.world.update(context)
 

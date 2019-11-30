@@ -34,6 +34,9 @@ class Nicholas(Sprite):
         self.__vspeed = a * t + self.__vspeed
 
     def update(self, context: Context, sprites: Sprites):
+        if math.floor(context.running_time) <= Const.countdown:
+            return
+
         self.move_by_gravity(context)
         intersected = False
         for ball in sprites.get_balls():
@@ -43,6 +46,7 @@ class Nicholas(Sprite):
 
         if intersected and not self.__bounced:
             self.__bounced = True
+            # noinspection PyUnboundLocalVariable
             self.__vspeed = -abs(self.__vspeed) * ball.bounciness()
             v0 = -math.sqrt(2 * context.gravity * self.__vpos)
             if v0 > self.__vspeed:

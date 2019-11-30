@@ -1,8 +1,10 @@
+import math
 import random
 
 import pygame
 
-from context import Context, Key
+from const import Const
+from context import Context
 from sprite import Sprites
 from sprites.background import Background, BackgroundType
 from sprites.balls.regular_ball import RegularBall
@@ -16,7 +18,8 @@ class World:
                                 Background(BackgroundType.FOREGROUND),
                                 Nicholas()])
         self.x = 0
-        self.pressed = False
+        self.time = 0
+        self.countdown = Const.countdown
 
     def __update_balls(self, context: Context):
         balls = list(self.sprites.get_balls())
@@ -39,9 +42,8 @@ class World:
                 self.sprites.append(ball)
 
     def update(self, context: Context):
-        print(str(round(context.desired_speed, 3)).ljust(5), round(context.current_speed, 3))
-
-        self.pressed = Key.MAIN in context.key_strokes
+        self.time = math.floor(context.running_time)
+        self.countdown = Const.countdown - self.time
 
         self.__update_balls(context)
 
@@ -49,10 +51,17 @@ class World:
             sprite.update(context, self.sprites)
 
     def render(self, surface: pygame.Surface, size_factor: float):
-
-        if self.pressed:
-            surface.fill((255, 0, 0),
-                         pygame.Rect(0.4 * size_factor, 0.4 * size_factor, 0.2 * size_factor, 0.2 * size_factor))
-
         for sprite in self.sprites:
             sprite.render(surface, size_factor)
+
+        if self.countdown >= 0:
+            font = pygame.font.Font("../res/Game_font.ttf", surface.get_height() // 5)
+            img = font.render(str(self.countdown), True, (0, 0, 0))
+            surface.blit(img, (
+                surface.get_width() // 2 - img.get_width() // 2,
+                surface.get_height() // 2 - img.get_height() // 2
+            ))
+        else:
+            font = pygame.font.Font("../res/Game_font.ttf", surface.get_height() // 10)
+            img = font.render(str(self.time), True, (0, 0, 0))
+            surface.blit(img, (int(surface.get_width() * 0.95) - img.get_width(), int(surface.get_height() * 0.05)))
