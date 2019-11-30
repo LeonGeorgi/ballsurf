@@ -47,7 +47,7 @@ class World:
 
         if len(balls) < 10 and random.random() < 0.05:
             new = random.choices([RegularBall, SmallBall, LargeBall, BouncyBall, DeadBall],
-                                 [10, 4, 2, 3, 2])
+                                 [100, 7, 7, 5, 3])
             ball = new[0]()
             if not any(b.box.intersects_with(ball.box) for b in balls):
                 self.sprites.append(ball)
@@ -73,6 +73,7 @@ class World:
 
     def render(self, surface: pygame.Surface, size_factor: float):
         surface.fill((94, 178, 235))
+        surface.fill((156, 67, 47), Const.tartan_area(surface))
 
         self.sprites.sort(key=lambda x: (x.type().value, x.z_index()))
         for sprite in self.sprites:

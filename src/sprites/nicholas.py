@@ -76,7 +76,7 @@ class Nicholas(Sprite):
 
     def bounce(self, input_speed: float, context: Context, bounciness: float):
         minimum_velocity = -math.sqrt(2 * context.gravity * self.__vpos)
-        new_speed = -input_speed * bounciness * context.ball_factor_factor
+        new_speed = -input_speed * bounciness * context.bounciness_factor
         self.__vspeed = max(new_speed, minimum_velocity)
 
     def bounce_from_ball(self, context: Context, bounciness: float):

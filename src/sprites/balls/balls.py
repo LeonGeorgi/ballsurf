@@ -8,7 +8,7 @@ class BouncyBall(Ball):
         return 0.7
 
     def bounciness(self) -> float:
-        return 1.5
+        return 1.6
 
     def color(self) -> Tuple[int, int, int]:
         return 235, 68, 199
@@ -19,7 +19,7 @@ class DeadBall(Ball):
         return 0.6
 
     def bounciness(self) -> float:
-        return 0.3
+        return 0.35
 
     def color(self) -> Tuple[int, int, int]:
         return 150, 150, 150
@@ -30,7 +30,7 @@ class LargeBall(Ball):
         return 1.1
 
     def bounciness(self) -> float:
-        return 0.66
+        return 0.75
 
     def color(self) -> Tuple[int, int, int]:
         return 189, 111, 209
@@ -52,7 +52,7 @@ class SmallBall(Ball):
         return 0.5
 
     def bounciness(self) -> float:
-        return 1.5
+        return 1.2
 
     def color(self) -> Tuple[int, int, int]:
         return 224, 124, 43

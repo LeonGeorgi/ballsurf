@@ -25,7 +25,8 @@ class Context:
         self.current_speed = 4.0
         self.desired_speed = 4.0
         self.desired_speed_increase = 0.0001
-        self.ball_factor_factor = 0.7
+        self.bounciness_factor = 0.6
+
         self.gravity = 9.81
         self.speed_increase = 0.005
         self.speed_factor_dec = 0.9
