@@ -1,3 +1,4 @@
+import random
 from typing import Optional
 
 import pygame
@@ -18,7 +19,7 @@ class Background(Sprite):
         self.x = x * Const.game_height
         self.speed = speed
 
-        self.image = CachedImage(filename)
+        self.image = CachedImage(filename, random.getrandbits(1))
 
         self.height = self.image.get_height() * Const.pixel_size
         self.width = self.image.get_width() * Const.pixel_size
