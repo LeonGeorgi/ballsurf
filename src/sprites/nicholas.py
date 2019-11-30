@@ -41,26 +41,50 @@ class Nicholas(Sprite):
         self.move_by_gravity(context)
         last_ball = self.__last_ball
         self.__last_ball = None
+        ball_bounciness = 0
         for ball in sprites.get(Type.BALL):
             if self.box.intersects_with(ball.box):
                 self.__last_ball = ball.id
+                ball_bounciness = ball.bounciness()
                 break
+
+        if self.__last_ball is None:
+            # check if player hits the bottom
+            if self.__vpos + self.__height >= Const.game_height:
+                # player hits the bottom
+                self.__last_ball = 0
+                ball_bounciness = 0.3
 
         if last_ball != self.__last_ball:
             self.__bounced = False
 
-        if self.__last_ball is not None and not self.__bounced:
-            self.__bounced = True
-            self.bounce(context, ball.bounciness())
-        elif last_ball is None:
-            self.__bounced = False
-        # if self.__vspeed < Const.game_height - self.__height and self.__bounced:
-        #    self.__bounced = False
+        intersected = self.__last_ball is not None
 
-    def bounce(self, context: Context, ball_factor: float):
-        new_speed = -self.__vspeed * ball_factor * context.ball_factor_factor
+        if intersected:
+
+            if not self.__bounced:
+                self.__bounced = True
+                if self.__last_ball == 0:
+
+                    # bounce from bottom
+                    self.bounce_from_bottom(context, ball_bounciness)
+                else:
+                    self.bounce_from_ball(context, ball_bounciness)
+
+            if self.__vpos + self.__height >= Const.game_height and self.__vspeed > 0:
+                context.lost = True
+
+    def bounce(self, input_speed: float, context: Context, bounciness: float):
         minimum_velocity = -math.sqrt(2 * context.gravity * self.__vpos)
+        new_speed = -input_speed * bounciness * context.ball_factor_factor
         self.__vspeed = max(new_speed, minimum_velocity)
+
+    def bounce_from_ball(self, context: Context, bounciness: float):
+        input_speed = max(5, abs(self.__vspeed))
+        self.bounce(input_speed, context, bounciness)
+
+    def bounce_from_bottom(self, context: Context, bounciness: float):
+        self.bounce(self.__vspeed, context, bounciness)
 
     def render(self, surface: pygame.Surface, size_factor: float):
         surface.fill((0, 200, 0), self.box.to_pygame(size_factor))
