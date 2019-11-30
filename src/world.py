@@ -6,6 +6,7 @@ import pygame
 from const import Const
 from context import Context
 from sprite import Sprites, Type
+from sprites.hills import Hills
 from sprites.backgrounds.cloud import Cloud
 from sprites.backgrounds.tree import Tree
 from sprites.balls.balls import *
@@ -14,7 +15,7 @@ from sprites.nicholas import Nicholas
 
 class World:
     def __init__(self):
-        self.sprites = Sprites([Nicholas()])
+        self.sprites = Sprites([Nicholas(), Hills()])
         self.x = 0
         self.time = 0
         self.countdown = Const.countdown
@@ -71,10 +72,7 @@ class World:
             sprite.update(context, self.sprites)
 
     def render(self, surface: pygame.Surface, size_factor: float):
-        surface.fill((94, 178, 235), pygame.Rect(0, 0, surface.get_width(), surface.get_height() * 3 // 5))
-        surface.fill((65, 209, 98),
-                     pygame.Rect(0, surface.get_height() * 3 // 5, surface.get_width(),
-                                 surface.get_height() * 2 // 5 + 4))
+        surface.fill((94, 178, 235))
 
         self.sprites.sort(key=lambda x: (x.type().value, x.z_index()))
         for sprite in self.sprites:
