@@ -37,6 +37,9 @@ class Hills(Sprite):
             self.control_points.append((last + 3, random.random()))
             changed = True
 
+        if context.resize:
+            self.cache = {}
+
         if changed:
             self.interpolation = interpolate.splrep(*list(zip(*self.control_points)))
             self.cache = {}

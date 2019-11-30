@@ -17,6 +17,9 @@ class Cache:
 
         return self.sizes[key]
 
+    def clear(self):
+        self.sizes = {}
+
 
 class CachedImage:
     cache: Dict[Tuple[str, bool], Cache] = {}
@@ -41,3 +44,8 @@ class CachedImage:
 
     def scale(self, width: int, height: int):
         return CachedImage.cache[self.key].scale(width, height)
+
+    @staticmethod
+    def clear_cache():
+        for cache in CachedImage.cache.values():
+            cache.clear()

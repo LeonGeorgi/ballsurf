@@ -6,10 +6,12 @@ from pygame.locals import *
 from const import Const
 from context import Context, Key
 from game import Game
-
+from image import CachedImage
 
 def run():
     pygame.init()
+
+    pygame.display.set_caption("Ballsurf")
 
     fps = 60
     default_millis = 1000 / fps
@@ -26,6 +28,7 @@ def run():
         screen.fill((0, 0, 0))
 
         context.key_strokes = set()
+        context.resize = False
 
         # Get system events
         for event in pygame.event.get():
@@ -35,6 +38,8 @@ def run():
             elif event.type == pygame.VIDEORESIZE:
                 width, height = event.dict['size']
                 pygame.display.set_mode((width, height))
+                context.resize = True
+                CachedImage.clear_cache()
 
         # Key key strokes
         keys = pygame.key.get_pressed()
