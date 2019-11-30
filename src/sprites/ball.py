@@ -13,8 +13,11 @@ from sprite import Sprite, Sprites, Type
 
 class Ball(Sprite, ABC):
 
-    def __init__(self):
-        self.__x = 2 * Const.game_height
+    def __init__(self, x=None):
+        if x is None:
+            self.__x = 2 * Const.game_height
+        else:
+            self.__x = x * Const.game_height
         self.id = uuid.uuid4()
 
     def update(self, context: Context, sprites: Sprites):

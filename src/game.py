@@ -5,6 +5,7 @@ import time
 from abc import ABC, abstractmethod
 from typing import List, Callable, Optional, Tuple
 
+import numpy as np
 import pygame
 import pygame.font
 
@@ -83,9 +84,10 @@ class GameMenu(GameState):
         index = 0
         for img, _ in entries:
             if self.index == index:
-                surface.fill((50, 50, 50),
-                             pygame.Rect(left, top + index * height, width,
-                                         height))
+                s = pygame.Surface((width, height))
+                s.set_alpha(70)
+                s.fill((255, 255, 255))
+                surface.blit(s, (left, top +index*height))
 
             width_center = width // 2 - img.get_width() // 2
             surface.blit(img, (left + width_center, top + index * height + GameMenu.PADDING))
@@ -134,11 +136,30 @@ class GameStatePause(GameMenu):
 
 class GameStateLost(GameMenu):
 
-    def __init__(self):
+    def __init__(self, world: World):
         super().__init__("Game over", [
             ("Retry", self.retry),
             ("Quit", self.quit)
         ])
+
+        self.world = world
+
+    @staticmethod
+    def grayscale(img):
+        arr = pygame.surfarray.array3d(img)
+        avgs = [[(r * 0.298 + g * 0.587 + b * 0.114) for (r, g, b) in col] for col in arr]
+        arr = np.array([[[avg, avg, avg] for avg in col] for col in avgs])
+        return pygame.surfarray.make_surface(arr)
+
+    def render(self, surface: pygame.Surface, size_factor: float):
+        self.world.render(surface, size_factor)
+
+        s = pygame.Surface((surface.get_width(), surface.get_height()))
+        s.set_alpha(150)
+        s.fill((0, 0, 0))
+        surface.blit(s, (0, 0))
+
+        super().render(surface, size_factor)
 
     @staticmethod
     def retry() -> Optional[GameState]:
@@ -171,7 +192,7 @@ class GameStateRunning(GameState):
         self.world.update(context)
 
         if context.lost:
-            return GameStateLost()
+            return GameStateLost(self)
 
         return self
 

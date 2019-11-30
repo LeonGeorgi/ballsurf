@@ -26,6 +26,15 @@ class World:
 
         for i in range(10):
             self.sprites.append(Tree(3 * random.random() - 0.5))
+    
+        balls = []
+        for i in range(5):
+            new = random.choices([RegularBall, SmallBall, LargeBall, BouncyBall, DeadBall],
+                                 [100, 7, 7, 5, 3])
+            ball = new[0](3 * random.random() - 0.5)
+            if not any(b.box.intersects_with(ball.box) for b in balls):
+                balls.append(ball)
+                self.sprites.append(ball)
 
     def __update_clouds(self):
         clouds = list(self.sprites.get(Type.CLOUD))
