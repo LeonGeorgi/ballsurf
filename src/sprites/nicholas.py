@@ -41,7 +41,7 @@ class Nicholas(Sprite):
         self.move_by_gravity(context)
         last_ball = self.__last_ball
         self.__last_ball = None
-        for ball in sprites.get_balls():
+        for ball in sprites.get(Type.BALL):
             if self.box.intersects_with(ball.box):
                 self.__last_ball = ball.id
                 break

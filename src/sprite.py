@@ -10,9 +10,10 @@ from gamerect import GameRect
 
 
 class Type(IntEnum):
-    PLAYER = 0
-    BALL = 1
-    BACKGROUND = 2
+    PLAYER = 3
+    BALL = 2
+    CLOUD = 0
+    TREE = 1
 
 
 class Sprite(ABC):
@@ -33,13 +34,19 @@ class Sprite(ABC):
     def type(self) -> Type:
         pass
 
+    def can_delete(self) -> bool:
+        return False
+
+    def z_index(self) -> float:
+        return 0.0
+
 
 class Sprites(list):
 
     def __init__(self, l):
         super().__init__(l)
 
-    def get_balls(self):
+    def get(self, type: Type):
         for x in self:
-            if x.type() is Type.BALL:
+            if x.type() is type:
                 yield x
