@@ -1,3 +1,4 @@
+import uuid
 from abc import abstractmethod, ABC
 from typing import Tuple
 
@@ -14,6 +15,7 @@ class Ball(Sprite, ABC):
 
     def __init__(self):
         self.__x = 2 * Const.game_height
+        self.id = uuid.uuid4()
 
     def update(self, context: Context, sprites: Sprites):
         self.__x -= context.x_delta

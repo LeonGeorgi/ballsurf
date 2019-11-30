@@ -16,6 +16,7 @@ class Nicholas(Sprite):
         self.__height = 1
         self.__vpos_max = 1 - self.__height
         self.__bounced = False
+        self.__last_ball = None
 
     def move_by_gravity(self, context: Context):
         # time in s
@@ -38,21 +39,28 @@ class Nicholas(Sprite):
             return
 
         self.move_by_gravity(context)
-        intersected = False
+        last_ball = self.__last_ball
+        self.__last_ball = None
         for ball in sprites.get_balls():
             if self.box.intersects_with(ball.box):
-                intersected = True
+                self.__last_ball = ball.id
                 break
 
-        if intersected and not self.__bounced:
-            self.__bounced = True
-            # noinspection PyUnboundLocalVariable
-            self.__vspeed = -abs(self.__vspeed) * ball.bounciness()
-            v0 = -math.sqrt(2 * context.gravity * self.__vpos)
-            if v0 > self.__vspeed:
-                self.__vspeed = v0
-        elif self.__vspeed < Const.game_height - self.__height and self.__bounced:
+        if last_ball != self.__last_ball:
             self.__bounced = False
+
+        if self.__last_ball is not None and not self.__bounced:
+            self.__bounced = True
+            self.bounce(context, ball.bounciness())
+        elif last_ball is None:
+            self.__bounced = False
+        # if self.__vspeed < Const.game_height - self.__height and self.__bounced:
+        #    self.__bounced = False
+
+    def bounce(self, context: Context, ball_factor: float):
+        new_speed = -self.__vspeed * ball_factor * context.ball_factor_factor
+        minimum_velocity = -math.sqrt(2 * context.gravity * self.__vpos)
+        self.__vspeed = max(new_speed, minimum_velocity)
 
     def render(self, surface: pygame.Surface, size_factor: float):
         surface.fill((0, 200, 0), self.box.to_pygame(size_factor))
