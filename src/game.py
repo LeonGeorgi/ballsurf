@@ -17,6 +17,13 @@ DELTA_FACTOR = 1 / 60
 MIN_BUTTON_TIME_DELTA = 0.2
 
 
+def grayscale(img):
+    arr = pygame.surfarray.array3d(img)
+    avgs = [[(r * 0.298 + g * 0.587 + b * 0.114) for (r, g, b) in col] for col in arr]
+    arr = np.array([[[avg, avg, avg] for avg in col] for col in avgs])
+    return pygame.surfarray.make_surface(arr)
+
+
 class GameState(ABC):
 
     @abstractmethod
@@ -87,7 +94,7 @@ class GameMenu(GameState):
                 s = pygame.Surface((width, height))
                 s.set_alpha(70)
                 s.fill((255, 255, 255))
-                surface.blit(s, (left, top +index*height))
+                surface.blit(s, (left, top + index * height))
 
             width_center = width // 2 - img.get_width() // 2
             surface.blit(img, (left + width_center, top + index * height + GameMenu.PADDING))
@@ -122,6 +129,16 @@ class GameStatePause(GameMenu):
 
         self.running = running
 
+    def render(self, surface: pygame.Surface, size_factor: float):
+        self.running.world.render(surface, size_factor)
+
+        s = pygame.Surface((surface.get_width(), surface.get_height()))
+        s.set_alpha(150)
+        s.fill((0, 0, 0))
+        surface.blit(s, (0, 0))
+
+        super().render(surface, size_factor)
+
     def resume(self) -> Optional[GameState]:
         return self.running
 
@@ -143,13 +160,6 @@ class GameStateLost(GameMenu):
         ])
 
         self.world = world
-
-    @staticmethod
-    def grayscale(img):
-        arr = pygame.surfarray.array3d(img)
-        avgs = [[(r * 0.298 + g * 0.587 + b * 0.114) for (r, g, b) in col] for col in arr]
-        arr = np.array([[[avg, avg, avg] for avg in col] for col in avgs])
-        return pygame.surfarray.make_surface(arr)
 
     def render(self, surface: pygame.Surface, size_factor: float):
         self.world.render(surface, size_factor)
