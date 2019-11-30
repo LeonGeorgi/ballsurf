@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from const import Const
@@ -14,12 +16,18 @@ class Tartan(Sprite):
         self.meters = 0
         self.image = CachedImage("../res/img/noice.png")
         self.border = self.image.get_width() * Const.pixel_size
+        self.random_line = [-1, 1]
 
     def update(self, context: Context, sprites: Sprites):
         self.__x -= context.x_delta
         self.meters += context.x_delta
         while self.__x < -self.border:
             self.__x += self.border
+
+        self.random_line[0] -= context.x_delta
+        if self.random_line[0] < 0 and random.random() < 0.05:
+            self.random_line[0] = 3 * Const.game_height
+            self.random_line[1] = random.randint(1, 2)
 
     def render(self, surface: pygame.Surface, size_factor: float):
         area = Const.tartan_area(surface)
@@ -55,12 +63,20 @@ class Tartan(Sprite):
                          int(next_meter_in * size_factor),
                          lines[0],
                          int(size_factor * Const.pixel_size),
-                         int(Const.game_height * size_factor * 0.07)
+                         int(Const.game_height * size_factor * 0.07 + size_factor * Const.pixel_size)
                      ))
         font = pygame.font.Font("../res/arcade.ttf", int(Const.game_height * size_factor * 0.07))
         img = font.render(next_meter_str, True, (255, 200, 200))
         surface.blit(img, (int((next_meter_in - 2 * Const.pixel_size) * size_factor) - img.get_width(),
                            int(lines[0] + Const.game_height * size_factor * 0.038 - img.get_height() // 2)))
+
+        surface.fill((255, 200, 200),
+                     pygame.Rect(
+                         int(self.random_line[0] * size_factor),
+                         lines[self.random_line[1]],
+                         int(size_factor * Const.pixel_size),
+                         int(Const.game_height * size_factor * 0.07 + size_factor * Const.pixel_size)
+                     ))
 
     def box(self) -> GameRect:
         return GameRect(0, 0, 1, 1)

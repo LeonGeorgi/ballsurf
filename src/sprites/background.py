@@ -1,4 +1,5 @@
 import random
+from abc import ABC
 from typing import Optional
 
 import pygame
@@ -10,7 +11,7 @@ from image import CachedImage
 from sprite import Sprite, Sprites
 
 
-class Background(Sprite):
+class Background(Sprite, ABC):
 
     def __init__(self, filename: str, top: float, speed: float, x: Optional[float] = None):
         if x is None:
