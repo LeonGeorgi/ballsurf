@@ -47,7 +47,7 @@ class Hills(Sprite):
 
         top = surface.get_height() * 0.5
         points = [(-10, surface.get_height() + 10)]
-        for x in np.arange(int(-2 + self.__x), int(3 * Const.game_height + self.__x), 0.1):
+        for x in np.arange(int(-2 + self.__x), int(3 * Const.game_height + self.__x), 0.2):
             if x in self.cache:
                 y = self.cache[x]
             else:
