@@ -17,6 +17,20 @@ class BouncyBall(Ball):
         return 1.6
 
 
+class BoostBall(Ball):
+    def immediate_speed_increase(self) -> float:
+        return 2
+
+    def desired_speed_increase(self) -> float:
+        return 1
+
+    def filename(self) -> str:
+        return "../res/img/ball_boost.png"
+
+    def bounciness(self) -> float:
+        return 1.6
+
+
 class DeadBall(Ball):
     def immediate_speed_increase(self) -> float:
         return -1
