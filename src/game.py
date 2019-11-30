@@ -139,6 +139,7 @@ class GameStateMenu(GameMenu):
         context.desired_speed += context.desired_speed_increase * context.time_factor
         context.x_delta = DELTA_FACTOR * context.current_speed * context.time_factor
         context.running_time += context.time_factor / Const.fps
+        context.meters += context.x_delta
 
         self.__update_clouds()
 
@@ -254,6 +255,7 @@ class GameStateRunning(GameState):
         context.desired_speed += context.desired_speed_increase * context.time_factor
         context.x_delta = DELTA_FACTOR * context.current_speed * context.time_factor
         context.running_time += context.time_factor / Const.fps
+        context.meters += context.x_delta
 
         self.world.update(context)
 

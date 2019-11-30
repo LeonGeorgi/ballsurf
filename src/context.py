@@ -35,3 +35,4 @@ class Context:
         self.speed_factor_dec = 0.9
         self.lost = False
         self.running_time = 0.0
+        self.meters = 0.0

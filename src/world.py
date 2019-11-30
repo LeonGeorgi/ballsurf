@@ -1,4 +1,3 @@
-import math
 import random
 
 import pygame
@@ -21,6 +20,7 @@ class World:
         self.x = 0
         self.time = 0
         self.countdown = Const.countdown
+        self.meters = 0
 
         self.last_background = None
         self.last_size = None
@@ -67,8 +67,12 @@ class World:
                 self.sprites.append(ball)
 
     def update(self, context: Context):
-        self.time = math.floor(context.running_time)
+        self.time = int(context.running_time)
         self.countdown = Const.countdown - self.time
+
+        if self.countdown >= 0:
+            context.meters = 0.0
+        self.meters = context.meters
 
         del_sprites = []
         for sprite in self.sprites:
@@ -105,5 +109,5 @@ class World:
             ))
         else:
             font = pygame.font.Font("../res/arcade.ttf", surface.get_height() // 10)
-            img = font.render(str(self.time), True, (0, 0, 0))
+            img = font.render(str(int(self.meters)), True, (0, 0, 0))
             surface.blit(img, (int(surface.get_width() * 0.95) - img.get_width(), int(surface.get_height() * 0.05)))

@@ -13,14 +13,14 @@ class Tartan(Sprite):
 
     def __init__(self):
         self.__x = 0
-        self.meters = 0
+        self.meters = 0.0
         self.image = CachedImage("../res/img/noice.png")
         self.border = self.image.get_width() * Const.pixel_size
         self.random_line = [-1, 1]
 
     def update(self, context: Context, sprites: Sprites):
         self.__x -= context.x_delta
-        self.meters += context.x_delta
+        self.meters = context.meters
         while self.__x < -self.border:
             self.__x += self.border
 
