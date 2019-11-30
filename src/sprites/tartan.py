@@ -10,11 +10,13 @@ class Tartan(Sprite):
 
     def __init__(self):
         self.__x = 0
+        self.meters = 0
         self.image = pygame.image.load("../res/img/noice.png")
         self.border = self.image.get_width() * Const.pixel_size
 
     def update(self, context: Context, sprites: Sprites):
         self.__x -= context.x_delta
+        self.meters += context.x_delta
         while self.__x < -self.border:
             self.__x += self.border
 
@@ -43,6 +45,21 @@ class Tartan(Sprite):
                                  int(size_factor * 1),
                                  int(size_factor * Const.pixel_size)
                              ))
+
+        m = 50
+        next_meter_in = m - self.meters % m
+        next_meter_str = str(int((self.meters // m + 1) * m))
+        surface.fill((255, 200, 200),
+                     pygame.Rect(
+                         int(next_meter_in * size_factor),
+                         lines[0],
+                         int(size_factor * Const.pixel_size),
+                         int(Const.game_height * size_factor * 0.07)
+                     ))
+        font = pygame.font.Font("../res/arcade.ttf", int(Const.game_height * size_factor * 0.07))
+        img = font.render(next_meter_str, True, (255, 200, 200))
+        surface.blit(img, (int((next_meter_in - 2 * Const.pixel_size) * size_factor) - img.get_width(),
+                           int(lines[0] + Const.game_height * size_factor * 0.038 - img.get_height() // 2)))
 
     def box(self) -> GameRect:
         return GameRect(0, 0, 1, 1)

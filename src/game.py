@@ -68,7 +68,7 @@ class GameMenu(GameState):
         surface_width = surface.get_width()
         surface_height = surface.get_height()
 
-        font = pygame.font.Font("../res/Game_font.ttf", surface_height // 10)
+        font = pygame.font.Font("../res/arcade.ttf", surface_height // 10)
         entries = [(font.render(text, True, (255, 255, 255)), callback) for text, callback in self.entries]
         width = max(x.get_width() for x, _ in entries) + 2 * GameMenu.PADDING
         height = max(x.get_height() for x, _ in entries) + 2 * GameMenu.PADDING

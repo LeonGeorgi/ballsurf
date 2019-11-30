@@ -89,13 +89,13 @@ class World:
             sprite.render(surface, size_factor)
 
         if self.countdown >= 0:
-            font = pygame.font.Font("../res/Game_font.ttf", surface.get_height() // 5)
+            font = pygame.font.Font("../res/arcade.ttf", surface.get_height() // 5)
             img = font.render(str(self.countdown), True, (0, 0, 0))
             surface.blit(img, (
                 surface.get_width() // 2 - img.get_width() // 2,
                 surface.get_height() // 2 - img.get_height() // 2
             ))
         else:
-            font = pygame.font.Font("../res/Game_font.ttf", surface.get_height() // 10)
+            font = pygame.font.Font("../res/arcade.ttf", surface.get_height() // 10)
             img = font.render(str(self.time), True, (0, 0, 0))
             surface.blit(img, (int(surface.get_width() * 0.95) - img.get_width(), int(surface.get_height() * 0.05)))
