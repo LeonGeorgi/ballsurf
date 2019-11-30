@@ -110,6 +110,7 @@ class GameStatePause(GameMenu):
     def __init__(self, running: GameStateRunning):
         super().__init__("Pause", [
             ("Resume", self.resume),
+            ("Restart", self.restart),
             ("Quit", self.quit)
         ])
 
@@ -117,6 +118,10 @@ class GameStatePause(GameMenu):
 
     def resume(self) -> Optional[GameState]:
         return self.running
+
+    @staticmethod
+    def restart() -> Optional[GameState]:
+        return GameStateRunning()
 
     @staticmethod
     def quit() -> Optional[GameState]:
