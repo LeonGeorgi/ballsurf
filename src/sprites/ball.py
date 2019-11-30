@@ -51,3 +51,11 @@ class Ball(Sprite, ABC):
         :return: by how much the velocity of the player is multiplied when he hits the ball
         """
         pass
+
+    @abstractmethod
+    def immediate_speed_increase(self) -> float:
+        pass
+
+    @abstractmethod
+    def desired_speed_increase(self) -> float:
+        pass

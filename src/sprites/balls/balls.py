@@ -1,7 +1,14 @@
+from const import Const
 from sprites.ball import Ball
 
 
 class BouncyBall(Ball):
+
+    def immediate_speed_increase(self) -> float:
+        return 2.5
+
+    def desired_speed_increase(self) -> float:
+        return 0
 
     def filename(self) -> str:
         return "../res/img/ball_bouncy.png"
@@ -11,6 +18,12 @@ class BouncyBall(Ball):
 
 
 class DeadBall(Ball):
+    def immediate_speed_increase(self) -> float:
+        return -1
+
+    def desired_speed_increase(self) -> float:
+        return 0
+
     def filename(self) -> str:
         return "../res/img/ball_dead.png"
 
@@ -19,6 +32,12 @@ class DeadBall(Ball):
 
 
 class LargeBall(Ball):
+    def immediate_speed_increase(self) -> float:
+        return 0.5
+
+    def desired_speed_increase(self) -> float:
+        return 0
+
     def filename(self) -> str:
         return "../res/img/ball_large.png"
 
@@ -27,6 +46,12 @@ class LargeBall(Ball):
 
 
 class RegularBall(Ball):
+    def immediate_speed_increase(self) -> float:
+        return 1
+
+    def desired_speed_increase(self) -> float:
+        return 0
+
     def filename(self) -> str:
         return "../res/img/ball_regular.png"
 
@@ -35,6 +60,12 @@ class RegularBall(Ball):
 
 
 class SmallBall(Ball):
+    def immediate_speed_increase(self) -> float:
+        return 1.5
+
+    def desired_speed_increase(self) -> float:
+        return 0
+
     def filename(self) -> str:
         return "../res/img/ball_small.png"
 

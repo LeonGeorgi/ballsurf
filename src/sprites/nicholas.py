@@ -67,10 +67,14 @@ class Nicholas(Sprite):
         last_ball = self.__last_ball
         self.__last_ball = None
         ball_bounciness = 0
+        immediate_speed_inc = 0
+        desired_speed_inc = 0
         for ball in sprites.get(Type.BALL):
             if self.box.intersects_with(ball.box):
                 self.__last_ball = ball.id
                 ball_bounciness = ball.bounciness()
+                immediate_speed_inc = ball.immediate_speed_increase()
+                desired_speed_inc = ball.desired_speed_increase()
                 break
 
         if self.__last_ball is None:
@@ -95,6 +99,10 @@ class Nicholas(Sprite):
                     self.bounce_from_bottom(context, ball_bounciness)
                 else:
                     self.bounce_from_ball(context, ball_bounciness)
+                    print('immediate', immediate_speed_inc)
+                    print('desired', immediate_speed_inc)
+                    context.current_speed += immediate_speed_inc
+                    context.desired_speed += desired_speed_inc
 
             if self.__vpos + self.__height >= Const.game_height and self.__vspeed > 0:
                 context.lost = True

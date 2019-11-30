@@ -7,6 +7,7 @@ class Const:
     fps = 60
     countdown = 3
     pixel_size = 0.05
+    speed_increase = 0.005
 
     @staticmethod
     def tartan_area(surface: pygame.Surface) -> pygame.Rect:
