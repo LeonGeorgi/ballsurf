@@ -51,8 +51,10 @@ def run():
 
         # Key key strokes
         keys = pygame.key.get_pressed()
-        if keys[K_SPACE] or keys[K_RETURN]:
-            context.key_strokes.add(Key.ACTION)
+        if keys[K_SPACE]:
+            context.key_strokes.add(Key.SPACE)
+        if keys[K_RETURN]:
+            context.key_strokes.add(Key.ENTER)
         if keys[K_DOWN]:
             context.key_strokes.add(Key.NEXT)
         if keys[K_UP]:

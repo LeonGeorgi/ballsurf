@@ -25,11 +25,15 @@ class GameState(ABC):
 
     def __init__(self):
         self.should_ignore_keys = True
+        self.close = False
 
     @abstractmethod
     def update(self, context: Context) -> Optional[GameState]:
         if len(context.key_strokes) == 0:
             self.should_ignore_keys = False
+        if self.close:
+            self.close = False
+            self.should_ignore_keys = True
         if self.should_ignore_keys:
             context.key_strokes = set()
 
@@ -63,7 +67,8 @@ class GameMenu(GameState):
         if t - self.last_button < MIN_BUTTON_TIME_DELTA:
             return self
 
-        if Key.ACTION in context.key_strokes:
+        action = Key.SPACE in context.key_strokes or Key.ENTER in context.key_strokes
+        if action:
             self.last_button = t
             _, callback = self.entries[self.index]
             return callback()
@@ -332,11 +337,12 @@ class GameStateHighScore(GameState):
     def update(self, context: Context) -> Optional[GameState]:
         super().update(context)
 
-        if Key.ESCAPE in context.key_strokes or Key.ACTION in context.key_strokes and self.score is None:
+        action = Key.ENTER in context.key_strokes or Key.SPACE in context.key_strokes
+        if Key.ESCAPE in context.key_strokes or action and self.score is None:
             self.previous_state.close = True
             return self.previous_state
 
-        if Key.ACTION in context.key_strokes and self.score is not None:
+        if Key.ENTER in context.key_strokes and self.score is not None:
             score.save(self.high_score)
             self.score = None
 

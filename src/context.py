@@ -5,7 +5,8 @@ from const import Const
 
 
 class Key(IntEnum):
-    ACTION = 0,
+    ENTER = 0,
+    SPACE = 1,
     NEXT = 2,
     PREV = 3,
     ESCAPE = 4,

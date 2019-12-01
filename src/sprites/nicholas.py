@@ -48,7 +48,8 @@ class Nicholas(Sprite):
         a = context.gravity
 
         self.__target_image = ImageType.LARGE
-        if Key.ACTION in context.key_strokes and (self.__vspeed >= 0 or self.__vpos < 0.6 * Const.game_height):
+        action = Key.SPACE in context.key_strokes or Key.ENTER in context.key_strokes
+        if action and (self.__vspeed >= 0 or self.__vpos < 0.6 * Const.game_height):
             context.current_speed = (context.current_speed - context.desired_speed) * math.pow(
                 context.speed_factor_dec, context.time_factor) + context.desired_speed
             a *= 4
