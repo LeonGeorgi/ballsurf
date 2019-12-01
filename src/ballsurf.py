@@ -30,6 +30,7 @@ def run():
 
         context.key_strokes = set()
         context.resize = False
+        context.letter = ''
 
         # Get system events
         for event in pygame.event.get():
@@ -42,6 +43,12 @@ def run():
                 context.resize = True
                 CachedImage.clear_cache()
 
+            if event.type == pygame.KEYDOWN:
+                if event.key == 8:
+                    context.key_strokes.add(Key.BACKSPACE)
+                else:
+                    context.letter = event.unicode
+
         # Key key strokes
         keys = pygame.key.get_pressed()
         if keys[K_SPACE] or keys[K_RETURN]:
@@ -52,8 +59,6 @@ def run():
             context.key_strokes.add(Key.PREV)
         if keys[K_ESCAPE]:
             context.key_strokes.add(Key.ESCAPE)
-        if keys[K_q]:
-            context.key_strokes.add(Key.QUIT)
 
         game.update(context)
 

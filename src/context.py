@@ -9,7 +9,8 @@ class Key(IntEnum):
     NEXT = 2,
     PREV = 3,
     ESCAPE = 4,
-    QUIT = 5
+    QUIT = 5,
+    BACKSPACE = 6
 
 
 class Context:
@@ -21,6 +22,7 @@ class Context:
         self.key_strokes: Set[Key] = set()
         self.x_delta = 0.0
         self.resize = False
+        self.letter = ''
 
     # noinspection PyAttributeOutsideInit
     def reset(self):
