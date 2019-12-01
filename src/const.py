@@ -15,7 +15,6 @@ class Const:
 
     @staticmethod
     def tartan_area(surface: pygame.Surface) -> pygame.Rect:
-        print(Const.tartan_top)
         return pygame.Rect(0, int(surface.get_height() * Const.tartan_top / Const.game_height),
                            surface.get_width(),
                            int(surface.get_height() * Const.tartan_height / Const.game_height) + 1)
