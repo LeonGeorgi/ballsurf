@@ -99,8 +99,6 @@ class Nicholas(Sprite):
                     self.bounce_from_bottom(context, ball_bounciness)
                 else:
                     self.bounce_from_ball(context, ball_bounciness)
-                    print('immediate', immediate_speed_inc)
-                    print('desired', immediate_speed_inc)
                     context.current_speed += immediate_speed_inc
                     context.desired_speed += desired_speed_inc
 

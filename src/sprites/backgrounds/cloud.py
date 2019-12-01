@@ -11,7 +11,7 @@ class Cloud(Background):
     def __init__(self, x: Optional[float] = None, fullscreen: Optional[bool] = None):
         top = 0.8 if fullscreen is True else 0.5
         super().__init__(
-            f"../res/img/cloud_{random.randint(1, 5)}.png",
+            f"../res/img/cloud_{random.randint(1, 6)}.png",
             Const.game_height * (top * random.random() - 0.05),
             0.05 + 0.05 * random.random(),
             x
