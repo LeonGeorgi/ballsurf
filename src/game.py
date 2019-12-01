@@ -152,7 +152,6 @@ class GameStateMenu(GameMenu):
             context.reset()
             self.first = False
 
-        context.current_speed += ((context.desired_speed * 2) - context.current_speed) * 0.003
         context.desired_speed += context.desired_speed_increase * context.time_factor
         context.x_delta = DELTA_FACTOR * context.current_speed * context.time_factor
         context.running_time += context.time_factor / Const.fps
@@ -290,7 +289,6 @@ class GameStateRunning(GameState):
         if Key.ESCAPE in context.key_strokes:
             return GameStatePause(self)
 
-        context.current_speed += ((context.desired_speed * 2) - context.current_speed) * 0.003
         context.desired_speed += context.desired_speed_increase * context.time_factor
         context.x_delta = DELTA_FACTOR * context.current_speed * context.time_factor
         context.running_time += context.time_factor / Const.fps
