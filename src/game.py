@@ -87,7 +87,7 @@ class GameMenu(GameState):
         index = 0
         for img, _ in entries:
             if self.index == index:
-                s = pygame.Surface((width, height))
+                s = pygame.Surface((width - GameMenu.PADDING, height))
                 s.set_alpha(70)
                 s.fill((255, 255, 255))
                 surface.blit(s, (left, top + index * height))
