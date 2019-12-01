@@ -28,10 +28,10 @@ class Context:
     def reset(self):
         self.current_speed = Const.start_speed
         self.desired_speed = Const.start_speed
-        self.desired_speed_increase = 0.0001
-        self.bounciness_factor = 0.6
+        self.desired_speed_increase = Const.desired_speed_increase
+        self.bounciness_factor = Const.bounciness_factor
 
-        self.gravity = 9.81
+        self.gravity = Const.gravity
         self.speed_increase = Const.speed_increase
         self.speed_factor_dec = 0.9
         self.lost = False

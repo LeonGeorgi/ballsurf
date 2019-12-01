@@ -97,9 +97,19 @@ class Nicholas(Sprite):
 
                     # bounce from bottom
                     self.bounce_from_bottom(context, ball_bounciness)
+                    self.__target_image = ImageType.DEAD
+                    self.set_image(ImageType.DEAD)
+                    self.__last_image_change = context.running_time
                 else:
                     self.bounce_from_ball(context, ball_bounciness)
-                    context.current_speed = max(context.current_speed + immediate_speed_inc, context.desired_speed / 2)
+                    ball.bounce(self.__vspeed)
+                    context.current_speed = min(
+                        max(
+                            context.current_speed + immediate_speed_inc,
+                            context.desired_speed / 2
+                        ),
+                        context.current_speed + Const.max_speed_increase
+                    )
                     context.desired_speed = max(context.desired_speed + desired_speed_inc, context.desired_speed / 2)
 
             if self.__vpos + self.__height >= Const.game_height and self.__vspeed > 0:
@@ -109,8 +119,7 @@ class Nicholas(Sprite):
 
         if self.__target_image is not self.image_type and context.running_time - self.__last_image_change > 0.1:
             self.__last_image_change = context.running_time
-
-            if self.image_type is ImageType.TRANSITION:
+            if self.image_type is ImageType.TRANSITION or self.image_type is ImageType.DEAD:
                 self.set_image(self.__target_image)
             else:
                 self.set_image(ImageType.TRANSITION)
@@ -126,6 +135,7 @@ class Nicholas(Sprite):
 
     def bounce_from_bottom(self, context: Context, bounciness: float):
         self.bounce(self.__vspeed, context, bounciness)
+        context.current_speed *= 0.5
 
     def render(self, surface: pygame.Surface, size_factor: float):
         w = int(self.__width * size_factor)

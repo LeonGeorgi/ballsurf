@@ -21,19 +21,48 @@ class Ball(Sprite, ABC):
         self.image = CachedImage(self.filename())
         self.diameter = self.image.get_width() * Const.pixel_size
 
+        self.y = Const.game_height - self.diameter
+        self.__vspeed = 0
+        self.bounced = False
+        self.hit_bottom = False
+
         self.id = uuid.uuid4()
 
     def update(self, context: Context, sprites: Sprites):
         self.x -= context.x_delta
+        if self.bounced:
+            self.move_by_gravity(context)
 
     def render(self, surface: pygame.Surface, size_factor: float):
         d = int(self.diameter * size_factor)
         img = self.image.scale(d, d)
-        surface.blit(img, (self.x * size_factor, (Const.game_height - self.diameter) * size_factor))
+        surface.blit(img, (self.x * size_factor, self.y * size_factor))
+
+    def bounce(self, velocity: float):
+        self.bounced = True
+        self.__vspeed = velocity / 2
+
+    def move_by_gravity(self, context: Context):
+
+        # time in s
+        t = context.time_factor / Const.fps
+        # gravity in m/(s**2)
+        a = context.gravity
+        self.y = 1 / 2 * a * (t ** 2) + \
+                      self.__vspeed * t + \
+                      self.y
+        self.__vspeed = a * t + self.__vspeed
+        if self.y + self.diameter >= Const.game_height and not self.hit_bottom:
+            self.__vspeed = -self.__vspeed * self.bounciness()
+            self.hit_bottom = True
+        elif self.y + self.diameter < Const.game_height and self.hit_bottom:
+            self.hit_bottom = False
+
+
 
     @property
     def box(self) -> GameRect:
-        return GameRect(self.x, Const.game_height - self.diameter, self.diameter, self.diameter)
+        return GameRect(self.x, self.y, self.diameter, self.diameter)
 
     def type(self) -> Type:
         return Type.BALL
