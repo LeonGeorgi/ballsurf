@@ -23,7 +23,7 @@ class World:
         self.last_background = None
         self.last_size = None
         self.last_ball_x = self.meters
-        self.next_ball_distance = 3
+        self.next_ball_distance = 1
         self.next_ball = RegularBall
         self.ball_stats = {
             RegularBall: (100, 9 / 16),
@@ -33,9 +33,6 @@ class World:
             DeadBall: (3, 2 / 16),
             BoostBall: (5, 12 / 16)
         }
-
-        new = random.choices([RegularBall, SmallBall, LargeBall, BouncyBall, DeadBall, BoostBall],
-                             [100, 7, 7, 5, 3, 5])
 
         for i in range(8):
             self.sprites.append(Cloud(3 * random.random() - 0.5))
@@ -47,10 +44,10 @@ class World:
             self.sprites.append(Tree(self.hills, 3 * random.random() - 0.5))
 
         balls = []
-        for i in range(5):
+        for i in range(10):
             new = random.choices([RegularBall, SmallBall, LargeBall, BouncyBall, DeadBall, BoostBall],
                                  [100, 7, 7, 5, 3, 3])
-            ball = new[0](3 * random.random() - 0.5)
+            ball = new[0](Const.game_height * 1.5 * random.random() - 1)
             if not any(b.box.intersects_with(ball.box) for b in balls):
                 balls.append(ball)
                 self.sprites.append(ball)
@@ -80,7 +77,6 @@ class World:
                 self.sprites.append(tree)
 
     def __update_balls(self, context: Context):
-        balls = list(self.sprites.get(Type.BALL))
         distance_to_right = (self.meters + Const.game_height / 9 * 16) - self.last_ball_x
         v = context.desired_speed * 1.5
         a = context.gravity
@@ -91,7 +87,12 @@ class World:
             self.sprites.append(self.next_ball(new_ball_x - self.meters))
             self.last_ball_x = new_ball_x
             next_mu = self.ball_stats[self.next_ball][1] * s_n / 2
-            self.next_ball_distance = min(max(2, random.gauss(next_mu, (next_mu / 2))), s_n)
+
+            h = min(max(2, random.gauss(next_mu, (next_mu / 2))), s_n)
+            self.next_ball_distance += 0.4
+            if self.meters >= -8 or h < self.next_ball_distance:
+                self.next_ball_distance = h
+
             self.next_ball = random.choices(*(list(a) for a in
                                               zip(*list((ball, stats[0]) for ball, stats in
                                                         self.ball_stats.items()))))[0]
