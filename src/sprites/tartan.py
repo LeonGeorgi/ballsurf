@@ -13,7 +13,7 @@ class Tartan(Sprite):
 
     def __init__(self):
         self.__x = 0
-        self.meters = 0.0
+        self.meters = Const.offset_meters
         self.image = CachedImage("../res/img/noice.png")
         self.border = self.image.get_width() * Const.pixel_size
         self.random_line = [-1, 1]
@@ -56,8 +56,8 @@ class Tartan(Sprite):
                              ))
 
         m = 50
-        next_meter_in = m - self.meters % m
-        next_meter_str = str(int((self.meters // m + 1) * m))
+        next_meter_in = m - (self.meters - Const.player_position) % m
+        next_meter_str = str(int(((self.meters - Const.player_position) // m + 1) * m))
         surface.fill((255, 200, 200),
                      pygame.Rect(
                          int(next_meter_in * size_factor),

@@ -48,7 +48,7 @@ class Nicholas(Sprite):
         a = context.gravity
 
         self.__target_image = ImageType.LARGE
-        if Key.MAIN in context.key_strokes and (self.__vspeed >= 0 or self.__vpos < 0.6 * Const.game_height):
+        if Key.ACTION in context.key_strokes and (self.__vspeed >= 0 or self.__vpos < 0.6 * Const.game_height):
             context.current_speed = (context.current_speed - context.desired_speed) * math.pow(
                 context.speed_factor_dec, context.time_factor) + context.desired_speed
             a *= 4
@@ -60,7 +60,7 @@ class Nicholas(Sprite):
         self.__vspeed = a * t + self.__vspeed
 
     def update(self, context: Context, sprites: Sprites):
-        if math.floor(context.running_time) <= Const.countdown:
+        if context.meters < 0:
             return
 
         self.move_by_gravity(context)
@@ -144,9 +144,9 @@ class Nicholas(Sprite):
         if self.image_type is ImageType.LARGE:
             h -= 4 * Const.pixel_size
 
-        # TODO update bouncs from bottom to use the bounting box instead of the raw values to allow vertical centering
+        # TODO update bounces from bottom to use the bounding box instead of the raw values to allow vertical centering
         # return GameRect(Const.game_height * 0.2 - w / 2, self.__vpos - h / 2, w, h)
-        return GameRect(Const.game_height * 0.2 - w / 2, self.__vpos, w, h)
+        return GameRect(Const.player_position - w / 2, self.__vpos, w, h)
 
     def type(self) -> Type:
         return Type.PLAYER

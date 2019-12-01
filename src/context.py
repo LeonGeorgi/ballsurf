@@ -5,10 +5,9 @@ from const import Const
 
 
 class Key(IntEnum):
-    MAIN = 0,
-    ACCEPT = 1,
-    UP = 2,
-    DOWN = 3,
+    ACTION = 0,
+    NEXT = 2,
+    PREV = 3,
     ESCAPE = 4,
     QUIT = 5
 
@@ -25,8 +24,8 @@ class Context:
 
     # noinspection PyAttributeOutsideInit
     def reset(self):
-        self.current_speed = 4.0
-        self.desired_speed = 4.0
+        self.current_speed = Const.start_speed
+        self.desired_speed = Const.start_speed
         self.desired_speed_increase = 0.0001
         self.bounciness_factor = 0.6
 
@@ -35,4 +34,4 @@ class Context:
         self.speed_factor_dec = 0.9
         self.lost = False
         self.running_time = 0.0
-        self.meters = 0.0
+        self.meters = Const.offset_meters

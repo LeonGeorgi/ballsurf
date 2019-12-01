@@ -51,15 +51,15 @@ class GameMenu(GameState):
         if t - self.last_button < MIN_BUTTON_TIME_DELTA:
             return self
 
-        if Key.ACCEPT in context.key_strokes:
+        if Key.ACTION in context.key_strokes:
             self.last_button = t
             _, callback = self.entries[self.index]
             return callback()
 
-        if Key.DOWN in context.key_strokes:
+        if Key.NEXT in context.key_strokes:
             self.last_button = t
             self.index = (self.index + 1) % len(self.entries)
-        elif Key.UP in context.key_strokes:
+        elif Key.PREV in context.key_strokes:
             self.last_button = t
             self.index -= 1
             if self.index < 0:

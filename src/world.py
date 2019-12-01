@@ -3,7 +3,6 @@ import random
 import pygame
 
 import utils
-from const import Const
 from context import Context
 from sprite import Sprites, Type
 from sprites.backgrounds.cloud import Cloud
@@ -18,9 +17,8 @@ class World:
     def __init__(self):
         self.sprites = Sprites([Nicholas(), Hills(), Tartan()])
         self.x = 0
-        self.time = 0
-        self.countdown = Const.countdown
         self.meters = 0
+        self.running_time = 0
 
         self.last_background = None
         self.last_size = None
@@ -67,12 +65,8 @@ class World:
                 self.sprites.append(ball)
 
     def update(self, context: Context):
-        self.time = int(context.running_time)
-        self.countdown = Const.countdown - self.time
-
-        if self.countdown >= 0:
-            context.meters = 0.0
         self.meters = context.meters
+        self.running_time = context.running_time
 
         del_sprites = []
         for sprite in self.sprites:
@@ -100,9 +94,11 @@ class World:
         for sprite in self.sprites:
             sprite.render(surface, size_factor)
 
-        if self.countdown >= 0:
+        if int(self.meters) < 0:
+            t = (Const.offset_meters * self.running_time) / (Const.offset_meters - self.meters)
+
             font = pygame.font.Font("../res/arcade.ttf", surface.get_height() // 5)
-            img = font.render(str(self.countdown), True, (0, 0, 0))
+            img = font.render(str(int(t - self.running_time) + 1), True, (0, 0, 0))
             surface.blit(img, (
                 surface.get_width() // 2 - img.get_width() // 2,
                 surface.get_height() // 2 - img.get_height() // 2
