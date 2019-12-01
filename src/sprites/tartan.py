@@ -39,10 +39,12 @@ class Tartan(Sprite):
         for i in range(0, surface.get_width() // size + 2):
             surface.blit(img, (i * size + self.__x * size_factor, area.top))
 
+        t = int((Const.tartan_top + Const.pixel_size) * size_factor)
+        h = int(Const.tartan_height * 0.38 * size_factor)
         lines = [
-            int(Const.game_height * size_factor * 0.82),
-            int(Const.game_height * size_factor * 0.89),
-            int(Const.game_height * size_factor * 0.96)
+            t,
+            t + h,
+            t + 2 * h
         ]
 
         for y in lines:
@@ -63,12 +65,12 @@ class Tartan(Sprite):
                          int(next_meter_in * size_factor),
                          lines[0],
                          int(size_factor * Const.pixel_size),
-                         int(Const.game_height * size_factor * 0.07 + size_factor * Const.pixel_size)
+                         h
                      ))
-        font = pygame.font.Font("../res/arcade.ttf", int(Const.game_height * size_factor * 0.07))
+        font = pygame.font.Font("../res/arcade.ttf", h)
         img = font.render(next_meter_str, True, (255, 200, 200))
         surface.blit(img, (int((next_meter_in - 2 * Const.pixel_size) * size_factor) - img.get_width(),
-                           int(lines[0] + Const.game_height * size_factor * 0.038 - img.get_height() // 2)))
+                           int(lines[0] + h / 2 - img.get_height() * 0.45)))
 
         surface.fill((255, 200, 200),
                      pygame.Rect(
