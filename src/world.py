@@ -81,17 +81,12 @@ class World:
     def __update_balls(self, context: Context):
         balls = list(self.sprites.get(Type.BALL))
         last_ball: Ball = balls[-1] if balls else RegularBall(0)
-        # print(last_ball.x)
         distance_to_right = Const.game_height / 9 * 16 - last_ball.x
-        # print(distance_to_right)
         v = context.desired_speed * 1.5
         a = context.gravity
         h = Const.game_height
         s_n = v * 2 * math.sqrt(2) * math.sqrt(h / a)
-        mu = 9 / 16 * s_n
-        stddev = 3 / 16 * s_n
         if distance_to_right >= self.next_ball_distance:
-            # print(last_ball.x, random.gauss(desired_d, stddev))
             self.sprites.append(self.next_ball(last_ball.x + self.next_ball_distance))
             next_mu = self.ball_stats[self.next_ball][1] * s_n / 2
             self.next_ball_distance = min(max(2, random.gauss(next_mu, (next_mu / 2))), s_n)

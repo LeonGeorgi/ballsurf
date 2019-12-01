@@ -1,5 +1,5 @@
-import random
 from abc import ABC
+import random
 from typing import Optional
 
 import pygame
@@ -13,14 +13,14 @@ from sprite import Sprite, Sprites
 
 class Background(Sprite, ABC):
 
-    def __init__(self, filename: str, top: float, speed: float, x: Optional[float] = None):
+    def __init__(self, filename: str, top: float, speed: float, x: Optional[float] = None, mirror: bool = True):
         if x is None:
             x = 2
 
         self.x = x * Const.game_height
         self.speed = speed
 
-        self.image = CachedImage(filename, random.getrandbits(1))
+        self.image = CachedImage(filename, mirror and random.getrandbits(1))
 
         self.height = self.image.get_height() * Const.pixel_size
         self.width = self.image.get_width() * Const.pixel_size
