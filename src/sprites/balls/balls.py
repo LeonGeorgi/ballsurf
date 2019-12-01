@@ -1,5 +1,4 @@
-from const import Const
-from sprites.ball import Ball
+from sprites import Ball
 
 
 class BouncyBall(Ball):

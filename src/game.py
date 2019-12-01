@@ -13,7 +13,7 @@ import utils
 from const import Const
 from context import Context, Key
 from sprite import Sprites, Type
-from sprites.backgrounds.cloud import Cloud
+from sprites.backgrounds import Cloud
 from world import World
 
 DELTA_FACTOR = 1 / 60

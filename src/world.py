@@ -3,15 +3,12 @@ import random
 import pygame
 
 import utils
+from const import Const
 from context import Context
 from sprite import Sprites, Type
-from sprites.backgrounds.cloud import Cloud
-from sprites.backgrounds.grass import Grass
-from sprites.backgrounds.tree import Tree
-from sprites.balls.balls import *
-from sprites.hills import Hills
-from sprites.nicholas import Nicholas
-from sprites.tartan import Tartan
+from sprites import Hills, Nicholas, Tartan
+from sprites.backgrounds import Cloud, Grass, Tree
+from sprites.balls import *
 
 
 class World:

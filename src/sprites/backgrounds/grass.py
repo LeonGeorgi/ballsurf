@@ -3,8 +3,8 @@ from typing import Optional
 
 from const import Const
 from sprite import Type
-from sprites.background import Background
-from sprites.hills import Hills
+from sprites import Background
+from sprites import Hills
 
 
 class Grass(Background):
