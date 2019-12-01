@@ -117,6 +117,7 @@ class Nicholas(Sprite):
                 context.lost = True
                 self.__target_image = ImageType.DEAD
                 self.set_image(ImageType.DEAD)
+                context.damage_sound.play()
 
         if self.__target_image is not self.image_type and context.running_time - self.__last_image_change > 0.1:
             self.__last_image_change = context.running_time
