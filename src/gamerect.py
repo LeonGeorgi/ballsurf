@@ -10,13 +10,17 @@ class GameRect:
         self.width = width
         self.height = height
 
-    def to_pygame(self, size_factor):
+    def to_pygame(self, size_factor, trim_edge: bool = True):
         left = self.left * size_factor
         top = self.top * size_factor
-        left_width = min(left, 0)
-        top_height = min(top, 0)
-        left = max(left, 0)
-        top = max(top, 0)
+        if trim_edge:
+            left_width = min(left, 0)
+            top_height = min(top, 0)
+            left = max(left, 0)
+            top = max(top, 0)
+        else :
+            left_width = 0
+            top_height = 0
 
         return pygame.Rect(left, top, self.width * size_factor + left_width,
                            self.height * size_factor + top_height)

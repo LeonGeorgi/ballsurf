@@ -34,13 +34,16 @@ class Ball(Sprite, ABC):
             self.move_by_gravity(context)
 
     def render(self, surface: pygame.Surface, size_factor: float):
-        d = int(self.diameter * size_factor)
-        img = self.image.scale(d, d)
-        surface.blit(img, (self.x * size_factor, self.y * size_factor))
+        rect = self.box.to_pygame(size_factor, False)
+        if rect.width <= 0 or rect.height <= 0:
+            return
+
+        img = self.image.scale(rect.width, rect.height)
+        surface.blit(img, (rect.left, rect.top))
 
     def bounce(self, velocity: float):
         self.bounced = True
-        self.__vspeed = velocity / 2
+        self.__vspeed = -velocity / 2
 
     def move_by_gravity(self, context: Context):
 
@@ -49,20 +52,24 @@ class Ball(Sprite, ABC):
         # gravity in m/(s**2)
         a = context.gravity
         self.y = 1 / 2 * a * (t ** 2) + \
-                      self.__vspeed * t + \
-                      self.y
+                 self.__vspeed * t + \
+                 self.y
         self.__vspeed = a * t + self.__vspeed
-        if self.y + self.diameter >= Const.game_height and not self.hit_bottom:
+        if self.y + self.diameter >= Const.game_height + self.diameter * 0.3 and not self.hit_bottom:
             self.__vspeed = -self.__vspeed * self.bounciness()
             self.hit_bottom = True
-        elif self.y + self.diameter < Const.game_height and self.hit_bottom:
+        elif self.y + self.diameter < Const.game_height + self.diameter * 0.3 and self.hit_bottom:
             self.hit_bottom = False
-
-
 
     @property
     def box(self) -> GameRect:
-        return GameRect(self.x, self.y, self.diameter, self.diameter)
+        offset = max(0, (self.y + self.diameter) - Const.game_height)
+        y_delta = 0
+        if offset > self.diameter * 0.3:
+            y_delta = offset - self.diameter * 0.3
+            offset = self.diameter * 0.3
+
+        return GameRect(self.x, self.y - y_delta, self.diameter, self.diameter - offset)
 
     def type(self) -> Type:
         return Type.BALL
