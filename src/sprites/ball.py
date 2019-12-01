@@ -14,9 +14,9 @@ class Ball(Sprite, ABC):
 
     def __init__(self, x=None):
         if x is None:
-            self.__x = 2 * Const.game_height
+            self.x = 2 * Const.game_height
         else:
-            self.__x = x * Const.game_height
+            self.x = x
 
         self.image = CachedImage(self.filename())
         self.diameter = self.image.get_width() * Const.pixel_size
@@ -24,22 +24,22 @@ class Ball(Sprite, ABC):
         self.id = uuid.uuid4()
 
     def update(self, context: Context, sprites: Sprites):
-        self.__x -= context.x_delta
+        self.x -= context.x_delta
 
     def render(self, surface: pygame.Surface, size_factor: float):
         d = int(self.diameter * size_factor)
         img = self.image.scale(d, d)
-        surface.blit(img, (self.__x * size_factor, (Const.game_height - self.diameter) * size_factor))
+        surface.blit(img, (self.x * size_factor, (Const.game_height - self.diameter) * size_factor))
 
     @property
     def box(self) -> GameRect:
-        return GameRect(self.__x, Const.game_height - self.diameter, self.diameter, self.diameter)
+        return GameRect(self.x, Const.game_height - self.diameter, self.diameter, self.diameter)
 
     def type(self) -> Type:
         return Type.BALL
 
     def can_delete(self) -> bool:
-        return self.__x <= -1
+        return self.x <= -1
 
     @abstractmethod
     def filename(self) -> str:

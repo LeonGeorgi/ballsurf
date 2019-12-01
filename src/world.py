@@ -1,3 +1,4 @@
+import math
 import random
 
 import pygame
@@ -21,6 +22,19 @@ class World:
 
         self.last_background = None
         self.last_size = None
+        self.next_ball_distance = 3
+        self.next_ball = RegularBall
+        self.ball_stats = {
+            RegularBall: (100, 9 / 16),
+            SmallBall: (7, 10 / 16),
+            LargeBall: (7, 7 / 16),
+            BouncyBall: (5, 12 / 16),
+            DeadBall: (3, 2 / 16),
+            BoostBall: (5, 12 / 16)
+        }
+
+        new = random.choices([RegularBall, SmallBall, LargeBall, BouncyBall, DeadBall, BoostBall],
+                             [100, 7, 7, 5, 3, 5])
 
         for i in range(8):
             self.sprites.append(Cloud(3 * random.random() - 0.5))
@@ -64,15 +78,26 @@ class World:
             if not any(c.box.intersects_with(tree.box) for c in trees):
                 self.sprites.append(tree)
 
-    def __update_balls(self):
+    def __update_balls(self, context: Context):
         balls = list(self.sprites.get(Type.BALL))
-
-        if len(balls) < 10 and random.random() < 0.05:
-            new = random.choices([RegularBall, SmallBall, LargeBall, BouncyBall, DeadBall, BoostBall],
-                                 [100, 7, 7, 5, 3, 5])
-            ball = new[0]()
-            if not any(b.box.intersects_with(ball.box) for b in balls):
-                self.sprites.append(ball)
+        last_ball: Ball = balls[-1] if balls else RegularBall(0)
+        # print(last_ball.x)
+        distance_to_right = Const.game_height / 9 * 16 - last_ball.x
+        # print(distance_to_right)
+        v = context.desired_speed * 1.5
+        a = context.gravity
+        h = Const.game_height
+        s_n = v * 2 * math.sqrt(2) * math.sqrt(h / a)
+        mu = 9 / 16 * s_n
+        stddev = 3 / 16 * s_n
+        if distance_to_right >= self.next_ball_distance:
+            # print(last_ball.x, random.gauss(desired_d, stddev))
+            self.sprites.append(self.next_ball(last_ball.x + self.next_ball_distance))
+            next_mu = self.ball_stats[self.next_ball][1] * s_n / 2
+            self.next_ball_distance = min(max(2, random.gauss(next_mu, (next_mu / 2))), s_n)
+            self.next_ball = random.choices(*(list(a) for a in
+                                              zip(*list((ball, stats[0]) for ball, stats in
+                                                        self.ball_stats.items()))))[0]
 
     def update(self, context: Context):
         self.meters = context.meters
@@ -89,7 +114,7 @@ class World:
         self.__update_clouds()
         self.__update_grass()
         self.__update_trees()
-        self.__update_balls()
+        self.__update_balls(context)
 
         for sprite in self.sprites:
             sprite.update(context, self.sprites)

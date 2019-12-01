@@ -99,8 +99,8 @@ class Nicholas(Sprite):
                     self.bounce_from_bottom(context, ball_bounciness)
                 else:
                     self.bounce_from_ball(context, ball_bounciness)
-                    context.current_speed += immediate_speed_inc
-                    context.desired_speed += desired_speed_inc
+                    context.current_speed = max(context.current_speed + immediate_speed_inc, context.desired_speed / 2)
+                    context.desired_speed = max(context.desired_speed + desired_speed_inc, context.desired_speed / 2)
 
             if self.__vpos + self.__height >= Const.game_height and self.__vspeed > 0:
                 context.lost = True
