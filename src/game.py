@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import json
-import os
 import random
 import sys
 import time
@@ -11,6 +9,7 @@ from typing import List, Callable, Optional, Tuple
 import pygame
 import pygame.font
 
+import score
 import utils
 from const import Const
 from context import Context, Key
@@ -118,7 +117,7 @@ class GameStateMenu(GameMenu):
             ("Quit", self.quit)
         ]
 
-        if len(GameStateHighScore.load_score()) > 0:
+        if len(score.load_score()) > 0:
             items.insert(1, ("Score", self.score))
 
         super().__init__("Ballsurf", items)
@@ -258,11 +257,11 @@ class GameStateLost(GameMenu):
         super().render(surface, size_factor)
 
     def next(self) -> Optional[GameState]:
-        score = int(self.world.meters)
+        s = int(self.world.meters)
 
-        if GameStateHighScore.is_record(score) and self.first:
+        if score.is_record(s) and self.first:
             self.first = False
-            return GameStateHighScore(self, score)
+            return GameStateHighScore(self, s)
 
         return GameStateRunning()
 
@@ -306,58 +305,29 @@ class GameStateRunning(GameState):
 
 
 class GameStateHighScore(GameState):
-    filename = "ballsurf.json"
 
-    def __init__(self, previous_state: GameState, score: Optional[int] = None):
+    def __init__(self, previous_state: GameState, sc: Optional[int] = None):
         super().__init__()
         self.previous_state = previous_state
-        self.score = score
+        self.score = sc
         self.name = ""
         self.index = -1
         self.not_blocking = False
 
-        self.high_score: List[Tuple[str, int]] = GameStateHighScore.load_score()
+        self.high_score: List[Tuple[str, int]] = score.load_score()
 
-        if score is not None:
+        if sc is not None:
             for i in range(len(self.high_score)):
-                if score > self.high_score[i][1]:
+                if sc > self.high_score[i][1]:
                     self.index = i
-                    self.high_score.insert(i, (self.name, score))
+                    self.high_score.insert(i, (self.name, sc))
                     break
 
             if len(self.high_score) < 5:
                 self.index = len(self.high_score)
-                self.high_score.append((self.name, score))
+                self.high_score.append((self.name, sc))
 
         self.high_score = self.high_score[:5]
-
-    @staticmethod
-    def load_score() -> List[Tuple[str, int]]:
-        high_score = []
-        if os.path.isfile(GameStateHighScore.filename):
-            with open(GameStateHighScore.filename, 'r') as file:
-                high_score = json.load(file)
-
-        high_score = high_score[:5]
-
-        return high_score
-
-    @staticmethod
-    def is_record(score) -> bool:
-        scores = GameStateHighScore.load_score()
-
-        if len(scores) < 5:
-            return True
-
-        for _, s in scores:
-            if score > s:
-                return True
-
-        return False
-
-    def save(self):
-        with open(GameStateHighScore.filename, 'w') as file:
-            json.dump(self.high_score, file)
 
     def update(self, context: Context) -> Optional[GameState]:
         super().update(context)
@@ -367,7 +337,7 @@ class GameStateHighScore(GameState):
             return self.previous_state
 
         if Key.ACTION in context.key_strokes and self.score is not None:
-            self.save()
+            score.save(self.high_score)
             self.score = None
             self.not_blocking = True
 

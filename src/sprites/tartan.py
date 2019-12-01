@@ -2,6 +2,7 @@ import random
 
 import pygame
 
+import score
 from const import Const
 from context import Context
 from gamerect import GameRect
@@ -17,6 +18,8 @@ class Tartan(Sprite):
         self.image = CachedImage("../res/img/noice.png")
         self.border = self.image.get_width() * Const.pixel_size
         self.random_line = [-1, 1]
+
+        self.score = score.load_score()
 
     def update(self, context: Context, sprites: Sprites):
         self.__x -= context.x_delta
@@ -77,8 +80,46 @@ class Tartan(Sprite):
                          int(self.random_line[0] * size_factor),
                          lines[self.random_line[1]],
                          int(size_factor * Const.pixel_size),
-                         int(Const.game_height * size_factor * 0.07 + size_factor * Const.pixel_size)
+                         h
                      ))
+
+        PADDING = Const.pixel_size * 2
+        for i, (name, s) in enumerate(self.score):
+            left = s - (self.meters - Const.player_position)
+            if -Const.game_height < left < Const.game_height * 3:
+                text = f"{i + 1}   {name}".rstrip()
+                img = font.render(text, True, (255, 255, 255))
+
+                pixel = int(Const.pixel_size * size_factor)
+                surface.fill((133, 94, 66),
+                             pygame.Rect(
+                                 int(left * size_factor) - pixel,
+                                 int(Const.tartan_top * size_factor - h),
+                                 int(size_factor * Const.pixel_size) + 2 * pixel,
+                                 h
+                             ))
+
+                l = int((left - PADDING) * size_factor - img.get_width() // 2)
+                surface.fill((106, 75, 53),
+                             pygame.Rect(
+                                 max(0, l - pixel),
+                                 int(Const.tartan_top * size_factor - h * 1.5) - pixel,
+                                 img.get_width() + PADDING * 2 * size_factor + min(0, l) + 2 * pixel,
+                                 img.get_height() + 2 * pixel
+                             ))
+
+                surface.fill((133, 94, 66),
+                             pygame.Rect(
+                                 max(0, l),
+                                 int(Const.tartan_top * size_factor - h * 1.5),
+                                 img.get_width() + PADDING * 2 * size_factor + min(0, l),
+                                 img.get_height()
+                             ))
+
+                surface.blit(img, (
+                    int(left * size_factor - img.get_width() // 2),
+                    int(Const.tartan_top * size_factor - h * 1.5)
+                ))
 
     def box(self) -> GameRect:
         return GameRect(0, 0, 1, 1)

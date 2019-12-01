@@ -13,8 +13,8 @@ class Type(IntEnum):
     CLOUD = 0
     HILLS = 1
     GRASS = 2
-    TARTAN = 3
-    TREE = 4
+    TREE = 3
+    TARTAN = 4
     BALL = 5
     PLAYER = 6
 
