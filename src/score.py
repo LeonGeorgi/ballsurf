@@ -19,7 +19,7 @@ def load_score() -> List[Tuple[str, int]]:
         return []
 
 
-def is_record(score) -> bool:
+def is_record(score: int) -> bool:
     scores = load_score()
 
     if len(scores) < 5:
@@ -32,6 +32,7 @@ def is_record(score) -> bool:
     return False
 
 
-def save(score):
+def save(score: List[Tuple[str, int]]):
+    score = sorted(score, key=lambda x: -x[1])
     with open(filename, 'w') as file:
         json.dump(score, file)

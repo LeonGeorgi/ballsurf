@@ -198,11 +198,16 @@ class GameStateMenu(GameMenu):
 class GameStatePause(GameMenu):
 
     def __init__(self, running: GameStateRunning):
-        super().__init__("Pause", [
+        items = [
             ("Resume", self.resume),
             ("Restart", self.restart),
             ("Quit", self.quit)
-        ])
+        ]
+
+        if len(score.load_score()) > 0:
+            items.insert(2, ("Score", self.score))
+
+        super().__init__("Pause", items)
 
         self.running = running
 
@@ -227,13 +232,15 @@ class GameStatePause(GameMenu):
     def quit() -> Optional[GameState]:
         return None
 
+    def score(self) -> Optional[GameState]:
+        return GameStateHighScore(self)
+
 
 class GameStateLost(GameMenu):
 
     def __init__(self, world: World):
         super().__init__("Game over", [
-            ("Next", self.next),
-            ("Quit", self.quit)
+            ("Next", self.next)
         ])
 
         self.world = world
@@ -242,7 +249,7 @@ class GameStateLost(GameMenu):
 
     def update(self, context: Context) -> Optional[GameState]:
         if self.close:
-            return GameStateRunning()
+            return GameStateMenu()
 
         return super().update(context)
 
@@ -263,11 +270,7 @@ class GameStateLost(GameMenu):
             self.first = False
             return GameStateHighScore(self, s)
 
-        return GameStateRunning()
-
-    @staticmethod
-    def quit() -> Optional[GameState]:
-        return None
+        return GameStateMenu()
 
 
 class GameStateRunning(GameState):
@@ -312,7 +315,6 @@ class GameStateHighScore(GameState):
         self.score = sc
         self.name = ""
         self.index = -1
-        self.not_blocking = False
 
         self.high_score: List[Tuple[str, int]] = score.load_score()
 
@@ -323,7 +325,7 @@ class GameStateHighScore(GameState):
                     self.high_score.insert(i, (self.name, sc))
                     break
 
-            if len(self.high_score) < 5:
+            if len(self.high_score) < 5 and self.index < 0:
                 self.index = len(self.high_score)
                 self.high_score.append((self.name, sc))
 
@@ -332,17 +334,13 @@ class GameStateHighScore(GameState):
     def update(self, context: Context) -> Optional[GameState]:
         super().update(context)
 
-        if Key.ESCAPE in context.key_strokes or Key.ACTION in context.key_strokes and self.score is None and not self.not_blocking:
+        if Key.ESCAPE in context.key_strokes or Key.ACTION in context.key_strokes and self.score is None:
             self.previous_state.close = True
             return self.previous_state
 
         if Key.ACTION in context.key_strokes and self.score is not None:
             score.save(self.high_score)
             self.score = None
-            self.not_blocking = True
-
-        if Key.ACTION not in context.key_strokes:
-            self.not_blocking = False
 
         if self.index >= 0 and self.score is not None and context.letter.isprintable():
             self.name += context.letter

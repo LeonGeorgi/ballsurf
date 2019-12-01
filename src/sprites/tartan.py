@@ -84,7 +84,7 @@ class Tartan(Sprite):
                      ))
 
         PADDING = Const.pixel_size * 2
-        for i, (name, s) in enumerate(self.score):
+        for i, (name, s) in reversed(list(enumerate(self.score))):
             left = s - (self.meters - Const.player_position)
             if -Const.game_height < left < Const.game_height * 3:
                 text = f"{i + 1}   {name}".rstrip()
