@@ -15,7 +15,8 @@ from sprites.tartan import Tartan
 
 class World:
     def __init__(self):
-        self.sprites = Sprites([Nicholas(), Hills(), Tartan()])
+        self.hills = Hills()
+        self.sprites = Sprites([Nicholas(), self.hills, Tartan()])
         self.x = 0
         self.meters = 0
         self.running_time = 0
@@ -27,7 +28,7 @@ class World:
             self.sprites.append(Cloud(3 * random.random() - 0.5))
 
         for i in range(10):
-            self.sprites.append(Tree(3 * random.random() - 0.5))
+            self.sprites.append(Tree(self.hills, 3 * random.random() - 0.5))
 
         balls = []
         for i in range(5):
@@ -50,7 +51,7 @@ class World:
         trees = list(self.sprites.get(Type.TREE))
 
         if len(trees) < 30 and random.random() < 0.03:
-            tree = Tree()
+            tree = Tree(self.hills)
             if not any(c.box.intersects_with(tree.box) for c in trees):
                 self.sprites.append(tree)
 

@@ -21,8 +21,7 @@ class Hills(Sprite):
         self.__x = -1
         self.cache = {}
 
-    def update(self, context: Context, sprites: Sprites):
-        self.__x += context.x_delta * self.speed
+    def __update(self):
         changed = False
         while len(self.control_points) > 0 and self.control_points[0][0] - self.__x < -20:
             del self.control_points[0]
@@ -37,12 +36,22 @@ class Hills(Sprite):
             self.control_points.append((last + 3, random.random()))
             changed = True
 
-        if context.resize:
-            self.cache = {}
-
         if changed:
             self.interpolation = interpolate.splrep(*list(zip(*self.control_points)))
             self.cache = {}
+
+    def update(self, context: Context, sprites: Sprites):
+        self.__x += context.x_delta * self.speed
+
+        if context.resize:
+            self.cache = {}
+
+        self.__update()
+
+    def get_y_at(self, x) -> float:
+        self.__update()
+
+        return interpolate.splev(x + self.__x, self.interpolation) + 0.5 * Const.game_height
 
     def render(self, surface: pygame.Surface, size_factor: float):
         if self.interpolation is None:
