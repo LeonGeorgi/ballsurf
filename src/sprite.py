@@ -12,10 +12,11 @@ from gamerect import GameRect
 class Type(IntEnum):
     CLOUD = 0
     HILLS = 1
-    TARTAN = 2
-    TREE = 3
-    BALL = 4
-    PLAYER = 5
+    GRASS = 2
+    TARTAN = 3
+    TREE = 4
+    BALL = 5
+    PLAYER = 6
 
 
 class Sprite(ABC):

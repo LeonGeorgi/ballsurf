@@ -6,6 +6,7 @@ import utils
 from context import Context
 from sprite import Sprites, Type
 from sprites.backgrounds.cloud import Cloud
+from sprites.backgrounds.grass import Grass
 from sprites.backgrounds.tree import Tree
 from sprites.balls.balls import *
 from sprites.hills import Hills
@@ -27,6 +28,9 @@ class World:
         for i in range(8):
             self.sprites.append(Cloud(3 * random.random() - 0.5))
 
+        for i in range(45):
+            self.sprites.append(Grass(self.hills, 3 * random.random() - 0.5))
+
         for i in range(10):
             self.sprites.append(Tree(self.hills, 3 * random.random() - 0.5))
 
@@ -46,6 +50,14 @@ class World:
             cloud = Cloud()
             if not any(c.box.intersects_with(cloud.box) for c in clouds):
                 self.sprites.append(cloud)
+
+    def __update_grass(self):
+        grasses = list(self.sprites.get(Type.GRASS))
+
+        if len(grasses) < 100 and random.random() < 0.1:
+            tree = Grass(self.hills)
+            if not any(c.box.intersects_with(tree.box) for c in grasses):
+                self.sprites.append(tree)
 
     def __update_trees(self):
         trees = list(self.sprites.get(Type.TREE))
@@ -78,6 +90,7 @@ class World:
             self.sprites.remove(sprite)
 
         self.__update_clouds()
+        self.__update_grass()
         self.__update_trees()
         self.__update_balls()
 
