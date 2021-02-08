@@ -17,7 +17,7 @@ This game was inspired by a YouTube video of Nicholas Smith setting the Guinness
 ### With Pipenv
 ```bash
 pipenv install
-pipenv run src/ballsurf.py
+pipenv run python src/ballsurf.py
 ```
 
 ### Without Pipenv
