@@ -26,7 +26,7 @@ class Context:
         self.x_delta = 0.0
         self.resize = False
         self.letter = ''
-        self.damage_sound = Sound("../res/sounds/damage.ogg")
+        self.damage_sound = Sound("res/sounds/damage.ogg")
 
     # noinspection PyAttributeOutsideInit
     def reset(self):

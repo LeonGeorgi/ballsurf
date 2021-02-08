@@ -15,7 +15,7 @@ class Tartan(Sprite):
     def __init__(self):
         self.__x = 0
         self.meters = Const.offset_meters
-        self.image = CachedImage("../res/img/noice.png")
+        self.image = CachedImage("res/img/noice.png")
         self.border = self.image.get_width() * Const.pixel_size
         self.random_line = [-1, 1]
 
@@ -70,7 +70,7 @@ class Tartan(Sprite):
                          int(size_factor * Const.pixel_size),
                          h
                      ))
-        font = pygame.font.Font("../res/arcade.ttf", h)
+        font = pygame.font.Font("res/arcade.ttf", h)
         img = font.render(next_meter_str, True, (255, 200, 200))
         surface.blit(img, (int((next_meter_in - 2 * Const.pixel_size) * size_factor) - img.get_width(),
                            int(lines[0] + h / 2 - img.get_height() * 0.45)))

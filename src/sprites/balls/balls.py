@@ -10,7 +10,7 @@ class BouncyBall(Ball):
         return 0
 
     def filename(self) -> str:
-        return "../res/img/ball_bouncy.png"
+        return "res/img/ball_bouncy.png"
 
     def bounciness(self) -> float:
         return 1.6
@@ -24,7 +24,7 @@ class BoostBall(Ball):
         return 1
 
     def filename(self) -> str:
-        return "../res/img/ball_boost.png"
+        return "res/img/ball_boost.png"
 
     def bounciness(self) -> float:
         return 1.6
@@ -38,7 +38,7 @@ class DeadBall(Ball):
         return 0
 
     def filename(self) -> str:
-        return "../res/img/ball_dead.png"
+        return "res/img/ball_dead.png"
 
     def bounciness(self) -> float:
         return 0.35
@@ -52,7 +52,7 @@ class LargeBall(Ball):
         return 0
 
     def filename(self) -> str:
-        return "../res/img/ball_large.png"
+        return "res/img/ball_large.png"
 
     def bounciness(self) -> float:
         return 0.75
@@ -66,7 +66,7 @@ class RegularBall(Ball):
         return 0
 
     def filename(self) -> str:
-        return "../res/img/ball_regular.png"
+        return "res/img/ball_regular.png"
 
     def bounciness(self) -> float:
         return 1
@@ -80,7 +80,7 @@ class SmallBall(Ball):
         return 0
 
     def filename(self) -> str:
-        return "../res/img/ball_small.png"
+        return "res/img/ball_small.png"
 
     def bounciness(self) -> float:
         return 1.2

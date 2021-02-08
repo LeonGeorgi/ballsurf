@@ -131,13 +131,13 @@ class World:
         if int(self.meters) < 0:
             t = (Const.offset_meters * self.running_time) / (Const.offset_meters - self.meters)
 
-            font = pygame.font.Font("../res/arcade.ttf", surface.get_height() // 5)
+            font = pygame.font.Font("res/arcade.ttf", surface.get_height() // 5)
             img = font.render(str(int(t - self.running_time) + 1), True, (0, 0, 0))
             surface.blit(img, (
                 surface.get_width() // 2 - img.get_width() // 2,
                 surface.get_height() // 2 - img.get_height() // 2
             ))
         else:
-            font = pygame.font.Font("../res/arcade.ttf", surface.get_height() // 10)
+            font = pygame.font.Font("res/arcade.ttf", surface.get_height() // 10)
             img = font.render(str(int(self.meters)), True, (0, 0, 0))
             surface.blit(img, (int(surface.get_width() * 0.95) - img.get_width(), int(surface.get_height() * 0.05)))

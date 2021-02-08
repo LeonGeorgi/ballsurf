@@ -11,7 +11,7 @@ class Tree(Background):
 
     def __init__(self, hills: Hills, x: Optional[float] = None):
         super().__init__(
-            f"../res/img/tree_{random.randint(1, 3)}.png",
+            f"res/img/tree_{random.randint(1, 3)}.png",
             0,
             0.3,
             x

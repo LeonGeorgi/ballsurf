@@ -26,7 +26,7 @@ class Nicholas(Sprite):
         self.__last_ball = None
 
         self.images = {
-            t: CachedImage(f"../res/img/man_{t.value}.png") for t in ImageType
+            t: CachedImage(f"res/img/man_{t.value}.png") for t in ImageType
         }
 
         self.__target_image = ImageType.LARGE
