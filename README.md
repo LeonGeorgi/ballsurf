@@ -14,13 +14,13 @@ This game was inspired by a YouTube video of Nicholas Smith setting the Guinness
 
 ## Usage
 
-### With Pipenv
+### With Poetry
 ```bash
-pipenv install
-pipenv run python src/ballsurf.py
+poetry install
+poetry run python src/ballsurf.py
 ```
 
-### Without Pipenv
+### Without Poetry
 ```bash
 pip3 install -r requirements.txt
 python3 src/ballsurf.py
